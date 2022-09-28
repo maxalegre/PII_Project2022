@@ -20,12 +20,14 @@ public class Categories {
         }
     }
 
+    /*
     public void removeCategory() {
         System.Console.WriteLine("Que categoria quiere eliminar? : ");
         string a = Console.ReadLine();
         int indice = this.Category.IndexOf(a);
         this.Category.RemoveAt(indice);
     }
+    */
 
     public void Populate() {
         String[] init = new String[]

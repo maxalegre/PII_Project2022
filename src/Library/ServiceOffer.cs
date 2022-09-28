@@ -15,10 +15,19 @@ namespace Library
         }
 
         public void removeService() {
-            System.Console.WriteLine("Que servicio quiere eliminar? : ");
-            string a = Console.ReadLine();
-            int indice = this.Offers.IndexOf();
-            this.Offers.RemoveAt(indice);
+            System.Console.WriteLine("Que servicio quiere eliminar?");
+            string input = Console.ReadLine();
+            int indice = this.Offers.FindIndex(item => item.Description.Equals(input));
+            //System.Console.WriteLine(indice);
+            if (indice != -1)
+            {
+                this.Offers.RemoveAt(indice);
+                System.Console.WriteLine("");
+            }
+            else
+            {
+                System.Console.WriteLine("Error, servicio no encontrado");
+            }
         }
 
 /*
