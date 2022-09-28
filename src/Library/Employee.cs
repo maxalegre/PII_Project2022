@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 namespace Library;
 
-class Employee
+public class Employee
 {
     //datos personales
     public string displayName;
@@ -39,8 +39,12 @@ class Employee
     {
     //ni idea que poner aca
     }
-    public void Qualify()
+    public void AddQualification(Qualifications calificacion){
+        this.Reviews.Add(calificacion);
+    }
+    public void Qualify(Qualifications calificacion,Employer receptor)
     {
     //ni aca
+        receptor.AddQualification(calificacion);
     }
 }
