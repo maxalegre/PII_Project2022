@@ -4,10 +4,10 @@ namespace Library;
 
 public class Admin : Categories
 {
-    public void addCategory(string category){
+    public void addCategory(Categories cat, string category){
         if (!string.IsNullOrEmpty(category))
         {
-            this.Add(category);
+            Add(cat, category);
         } 
         else
         {
