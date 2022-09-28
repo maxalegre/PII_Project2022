@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 namespace Library;
 
-class Employer
+public class Employer
 {
     //datos personales
     public string displayName;
@@ -22,6 +22,7 @@ class Employer
         this.Location = Location;
         this.contactNumbers.Add(contactNumber);
         this.contactEmail = contactEmail;
+        
     }
     public void changeUsername(string newName)
     {
@@ -43,8 +44,12 @@ class Employer
     {
     //ni idea que poner aca
     }
-    public void Qualify()
+    public void AddQualification(Qualifications calificacion){
+        this.Reviews.Add(calificacion);
+    }
+    public void Qualify(Qualifications calificacion,Employee receptor)
     {
     //ni aca
+        receptor.AddQualification(calificacion);
     }
 }
