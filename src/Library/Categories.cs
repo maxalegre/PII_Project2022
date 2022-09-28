@@ -9,7 +9,7 @@ public class Categories {
     public Categories() {
         Populate();
     }
-    protected void Add(Categories cat, string category){
+    public void Add(Categories cat, string category){
         cat.Category.Add(category);
     }
 
@@ -19,15 +19,6 @@ public class Categories {
             System.Console.WriteLine(item);
         }
     }
-
-    /*
-    public void removeCategory() {
-        System.Console.WriteLine("Que categoria quiere eliminar? : ");
-        string a = Console.ReadLine();
-        int indice = this.Category.IndexOf(a);
-        this.Category.RemoveAt(indice);
-    }
-    */
 
     public void Populate() {
         String[] init = new String[]

@@ -2,12 +2,12 @@ using System;
 
 namespace Library;
 
-public class Admin : Categories
+public class Admin
 {
     public void addCategory(Categories cat, string category){
         if (!string.IsNullOrEmpty(category))
         {
-            Add(cat, category);
+            //Agregar categoria
         } 
         else
         {

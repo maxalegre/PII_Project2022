@@ -13,9 +13,9 @@ namespace Program
             Offers Offer2 = new Offers("Ingeniero", 500);
             Offers Offer3 = new Offers("Jardinero", 1000);
             ServiceOffer Services = new ServiceOffer();
-            Services.Offers.Add(Offer1);
-            Services.Offers.Add(Offer2);
-            Services.Offers.Add(Offer3);
+            Services.addOffer(Offer1);
+            Services.addOffer(Offer2);
+            Services.addOffer(Offer3);
 
             Admin adm = new Admin();
             adm.addCategory(cat, "Translator");
@@ -27,9 +27,12 @@ namespace Program
             cat.removeCategory();
             cat.getCategories();
             */
+
+            /*
             Services.getServices();
             Services.removeService();
             Services.getServices();
+            */
         }
     }
 }

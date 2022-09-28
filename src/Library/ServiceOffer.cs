@@ -5,7 +5,11 @@ namespace Library
 {
     public class ServiceOffer
     {
-        public List<Offers> Offers = new List<Offers>();
+        private List<Offers> Offers = new List<Offers>();
+
+        public void addOffer(Offers Offer) {
+            this.Offers.Add(Offer);
+        }
 
         public void getServices() {
             foreach (Offers item in this.Offers)
@@ -14,11 +18,12 @@ namespace Library
             }
         }
 
+        //Este metodo deberia estar en la clase Admin, pero la logica del mismo esta funcionando.
+        //En un futuro, hay que moverlo.
         public void removeService() {
             System.Console.WriteLine("Que servicio quiere eliminar?");
             string input = Console.ReadLine();
             int indice = this.Offers.FindIndex(item => item.Description.Equals(input));
-            //System.Console.WriteLine(indice);
             if (indice != -1)
             {
                 this.Offers.RemoveAt(indice);
