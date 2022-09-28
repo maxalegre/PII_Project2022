@@ -47,9 +47,8 @@ public class Employer
     public void AddQualification(Qualifications calificacion){
         this.Reviews.Add(calificacion);
     }
-    public void Qualify(Qualifications calificacion,Employee receptor)
+    public void Qualify(Qualifications calificacion, Employee receptor)
     {
-    //ni aca
         receptor.AddQualification(calificacion);
     }
 }
