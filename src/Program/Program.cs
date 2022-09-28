@@ -8,15 +8,21 @@ namespace Program
         static void Main(string[] args)
         {
             Categories cat = new Categories();
-            //cat.Add("asd");
+
+            Offers Offer1 = new Offers("Test", 100);
+            Offers Offer2 = new Offers("Test2", 500);
+            ServiceOffer Services = new ServiceOffer();
+            Services.Offers.Add(Offer1);
+            Services.Offers.Add(Offer2);
 
             Admin adm = new Admin();
-            adm.addCategory("asd");
+            adm.addCategory(cat, "Translator");
+            adm.addCategory(cat, "Data Analyst");
+            adm.addCategory(cat, "Fitness Instructor");
 
-            foreach (string item in adm.Category)
-            {
-                Console.WriteLine(item);
-            }
+            cat.getCategories();
+            cat.removeCategory();
+            cat.getCategories();
         }
     }
 }
