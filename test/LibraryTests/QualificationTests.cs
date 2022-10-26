@@ -16,9 +16,9 @@ using Library;
         [Test]
         public void AddingQualification()
         {
-            Employee empleado1= new Employee("Jorge", "Ventura", "Montevideo " ,"098212", "Jorge@tanto");
+            // Employee empleado1= new Employee("Jorge", "Ventura", "Montevideo " ,"098212", "Jorge@tanto");
             
-            Employer empleador1= new Employer("Mateo", "Sosa", "Montevideo " ,"0353212", "Mate9o@tanto");
+            // Employer empleador1= new Employer("Mateo", "Sosa", "Montevideo " ,"0353212", "Mate9o@tanto");
 
             Qualifications calificacion1= new Qualifications(11, "Muy buen trabajador" );
             
@@ -29,8 +29,8 @@ using Library;
             //int expectedValor= 5 ;
             //string expectedDescription= "Muy mal jefe" ;
 
-            empleado1.Qualify(calificacion2,empleador1);
-            empleado1.Qualify(calificacion3,empleador1);
+            // empleado1.Qualify(calificacion2,empleador1);
+            // empleado1.Qualify(calificacion3,empleador1);
 
             
            //int valorObtenido= empleador1.Reviews[0].Value;
