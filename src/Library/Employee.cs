@@ -52,9 +52,9 @@ public class Employee : User, IUser
     {
         this.contactEmail = newEmail;
     }
-    public void makeOffer()
+    public void makeOffer(string Description, double Remuneration) 
     {
-    //ni idea que poner aca
+        Offers offer = new Offers(Description, Remuneration);
     }
     public void AddQualification(Qualifications calificacion){
         this.Reviews.Add(calificacion);

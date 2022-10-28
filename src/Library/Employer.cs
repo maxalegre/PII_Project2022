@@ -51,13 +51,14 @@ public class Employer : User, IUser
     {
         this.contactEmail = newEmail;
     }
-    public void searchOffer()
+    public void searchOffer(Employer employer, Offers offers)
     {
-    //ni idea que poner aca
+        //offers.GetOffers();
+        // Acá debería recibir una lista de ofertas.
     }
     public void searchEmployee()
     {
-    //ni idea que poner aca
+        // Acá recibiría a los empleados por categorias
     }
     public void AddQualification(Qualifications calificacion){
         this.Reviews.Add(calificacion);
