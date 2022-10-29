@@ -34,6 +34,13 @@ namespace Program
             Services.removeService();
             Services.getServices();
             */
+            /*
+            ContractManager emp1 = new ContractManager ();
+            emp1.createEmployeeContracts("27/10/2022","-","Translator","asd");
+            emp1.GetEmployeeContracts();
+            */
+            
+               
         }
     }
 }
