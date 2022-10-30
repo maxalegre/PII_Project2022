@@ -39,8 +39,23 @@ namespace Program
             emp1.createEmployeeContracts("27/10/2022","-","Translator","asd");
             emp1.GetEmployeeContracts();
             */
-            
-               
-        }
+            /*
+            double suma = 0;
+            double promedio = 0;
+            int qualification.Length = 0;
+            Console.WriteLine("Indique el ID del usuario del que quisiera conocer la calificación promedio");
+            char persona = Console.ReadLine()[0];
+            for (int i=0; i < qualification.Length; i++);
+            {
+                if(persona==a[i].getId())
+                {
+                    suma = suma+ a[i].getQualification();
+                    cantidadCalificaciones++;
+                }
+            }
+            promedio = suma / qualification.Length;
+            Console.WriteLine ("La calificaciones promedio de la persona consultada es de:" + promedio);
+            */
+        }    
     }
 }
