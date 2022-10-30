@@ -20,10 +20,10 @@ using Library;
             
             // Employer empleador1= new Employer("Mateo", "Sosa", "Montevideo " ,"0353212", "Mate9o@tanto");
 
-            Qualifications calificacion1= new Qualifications(11, "Muy buen trabajador" );
+            Qualification calificacion1= new Qualification(11, "Muy buen trabajador" );
             
-            Qualifications calificacion2= new Qualifications(5, "Muy mal jefe" );
-            Qualifications calificacion3= new Qualifications(76, "Muy buwn jefe" );
+            Qualification calificacion2= new Qualification(5, "Muy mal jefe" );
+            Qualification calificacion3= new Qualification(76, "Muy buwn jefe" );
 
 
             //int expectedValor= 5 ;

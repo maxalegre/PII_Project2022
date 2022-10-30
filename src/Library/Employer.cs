@@ -4,7 +4,7 @@ namespace Library;
 
 public class Employer : User, IUser
 {
-    public List<Qualifications> Reviews = new List<Qualifications>();
+    public List<Qualification> Reviews = new List<Qualification>();
 
     public Employer (string name, string lastname, string id, string rol, string location, string contactnumber, string contactemail) 
     : base(name, lastname, id, rol, location, contactemail, contactnumber)
@@ -59,10 +59,10 @@ public class Employer : User, IUser
     {
     //ni idea que poner aca
     }
-    public void AddQualification(Qualifications calificacion){
+    public void AddQualification(Qualification calificacion){
         this.Reviews.Add(calificacion);
     }
-    public void Qualify(Qualifications calificacion, Employee receptor)
+    public void Qualify(Qualification calificacion, Employee receptor)
     {
         receptor.AddQualification(calificacion);
     }
