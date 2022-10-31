@@ -52,16 +52,19 @@ public class Employee : User, IUser
     {
         this.contactEmail = newEmail;
     }
-    public void makeOffer(string Description, double Remuneration) 
-    {
-        Offers offer = new Offers(Description, Remuneration);
-    }
+   
     public void AddQualification(Qualification calificacion){
         this.Reviews.Add(calificacion);
     }
-    public void Qualify(Qualification calificacion, Employer receptor)
+    public void addOffer(string description , double remuneration, string category)
     {
-        receptor.AddQualification(calificacion);
+        //OffersManager offersManager= new OffersManager();
+        OffersManager.Instance.addOffer(this,description,remuneration,category);
     }
+   public void searchOffers(string category)
+   {
+    //OffersManager offersManager= new OffersManager();
+    OffersManager.Instance.getoOffersByCategory(category);
+   }
     
 }

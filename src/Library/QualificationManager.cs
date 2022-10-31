@@ -1,11 +1,22 @@
 using System;
 using System.Collections.Generic;
 using Library;
-public class QualificationManager
+public sealed class QualificationManager
 {
-    /*public QualificationManager(){}
-    public void AddQualification(Qualification qualification, IUser user)
+    private static QualificationManager instance;
+
+    public static QualificationManager Instance
     {
-        user.
-    }*/
+        get
+        {
+            if (instance == null)
+            {
+                instance = new QualificationManager();
+            }
+
+            return instance;
+        }
+    }
+    public QualificationManager(){}
+    
 }

@@ -6,12 +6,25 @@ namespace Library
     /// <summary>
     /// Clase que se encarga de manejar los contratos. Se separan en employers y employees
     /// </summary>
-    public class ContractManager 
+    public sealed class ContractManager 
     {
-        public List<Contract> employeeContracts = new List<Contract>();
-        public List<Contract> employerContracts = new List<Contract>();
-    
-    
+    public List<Contract> employeeContracts = new List<Contract>();
+    public List<Contract> employerContracts = new List<Contract>();
+    private static ContractManager instance;
+
+    public static ContractManager Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                instance = new ContractManager();
+            }
+
+            return instance;
+        }
+    }
+    public ContractManager(){}
     public void createEmployeeContracts(string initDate, string finalDate, string jobs, string role)
     {
         if (string.Equals(role.ToLower(), "employee"))
