@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Library;
-public class QualificationManager
+public sealed class QualificationManager
 {
     private static QualificationManager instance;
 

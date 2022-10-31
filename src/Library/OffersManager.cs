@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 namespace Library
 {
-    public class OffersManager
+    public sealed class OffersManager
     {
     private static OffersManager instance;
 
@@ -22,16 +22,16 @@ namespace Library
         public List<Offer> Offers = new List<Offer>();
 
 
-        public OffersManager(){
+        private OffersManager(){
         }
         public void addOffer(Employee employee,string Description , double Remuneration, string category) {
             Offer offer = new Offer(employee,Description,Remuneration,category);
             this.Offers.Add(offer); 
-            CategoriesManager categoriesManager= new CategoriesManager();
-            categoriesManager.addCategory(category);
+            //CategoriesManager categoriesManager= new CategoriesManager();
+            CategoriesManager.Instance.addCategory(category);
         }
 
-        public List<Offer> getoOffersByCategory(string category) {
+        public void getoOffersByCategory(string category) {
             
             List<Offer> offersByCategory= new List<Offer>();
             
@@ -39,11 +39,11 @@ namespace Library
             {   
                 if(offer.Category== category)
                 {
-                     offersByCategory.Add(offer);
+                     //offersByCategory.Add(offer);
+                     Console.WriteLine($"Oferta: {offer.Description}\nNombre: {offer.employee.Name}\nApellido: {offer.employee.LastName}\nCategoria: {offer.Category} ");
                 }
 
             }
-            return offersByCategory;
         }
         
 

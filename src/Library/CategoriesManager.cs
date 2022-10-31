@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Library;
 
-public class CategoriesManager {
+public sealed class CategoriesManager {
     private List<Category> categories { get; set; }= new List<Category>();
 
     private static CategoriesManager instance;
@@ -24,9 +24,10 @@ public class CategoriesManager {
 
     }
     public void addCategory(string nameCategorie){
-        Category category = new Category(nameCategorie);
-        categories.Add(category);
-        
+        Category category = new Category(nameCategorie.ToUpper());
+        if(!categories.Contains(category)){
+            categories.Add(category);
+        }
     }
 
     public void getCategories() {

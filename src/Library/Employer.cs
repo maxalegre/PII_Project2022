@@ -55,6 +55,11 @@ public class Employer : User, IUser
     public void AddQualification(Qualification calificacion){
         this.Reviews.Add(calificacion);
     }
+    public void getoOffersByCategory(string category)
+    {
+        //OffersManager offersManager= new OffersManager();
+        OffersManager.Instance.getoOffersByCategory(category);
+    }
 }
 
 

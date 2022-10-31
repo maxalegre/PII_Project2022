@@ -20,7 +20,7 @@ public sealed class UserManager
         }
     }
     public List<IUser> Users = new List<IUser>();
-    private UserManager(){}
+    public UserManager(){}
 
     public void CreateUser(string name, string lastname, string id, string rol, string location, string contactnumber, string contactemail) {
         if (string.Equals(rol.ToLower(), "employer"))
