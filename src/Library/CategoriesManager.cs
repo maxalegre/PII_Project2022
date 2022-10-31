@@ -20,7 +20,7 @@ public sealed class CategoriesManager {
             return instance;
         }
     }
-    public CategoriesManager() {
+    private CategoriesManager() {
 
     }
     public void addCategory(string nameCategorie){

@@ -18,5 +18,6 @@ public sealed class Admin
             return instance;
         }
     }
+    private Admin(){}
    
 }
