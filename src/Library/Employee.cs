@@ -52,16 +52,10 @@ public class Employee : User, IUser
     {
         this.contactEmail = newEmail;
     }
-    public void makeOffer(string Description, double Remuneration) 
-    {
-        Offers offer = new Offers(Description, Remuneration);
-    }
+   
     public void AddQualification(Qualification calificacion){
         this.Reviews.Add(calificacion);
     }
-    public void Qualify(Qualification calificacion, Employer receptor)
-    {
-        receptor.AddQualification(calificacion);
-    }
+   
     
 }

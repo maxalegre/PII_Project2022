@@ -8,9 +8,22 @@ namespace Library
     /// </summary>
     public class ContractManager 
     {
-        public List<Contract> employeeContracts = new List<Contract>();
-        public List<Contract> employerContracts = new List<Contract>();
-    
+    public List<Contract> employeeContracts = new List<Contract>();
+    public List<Contract> employerContracts = new List<Contract>();
+    private static ContractManager instance;
+
+    public static ContractManager Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                instance = new ContractManager();
+            }
+
+            return instance;
+        }
+    }
     
     public void createEmployeeContracts(string initDate, string finalDate, string jobs, string role)
     {

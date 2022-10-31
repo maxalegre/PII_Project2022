@@ -51,20 +51,10 @@ public class Employer : User, IUser
     {
         this.contactEmail = newEmail;
     }
-    public void searchOffer(Employer employer, Offers offers)
-    {
-        //offers.GetOffers();
-        // Acá debería recibir una lista de ofertas.
-    }
-    public void searchEmployee()
-    {
-        // Acá recibiría a los empleados por categorias
-    }
+    
     public void AddQualification(Qualification calificacion){
         this.Reviews.Add(calificacion);
     }
-    public void Qualify(Qualification calificacion, Employee receptor)
-    {
-        receptor.AddQualification(calificacion);
-    }
 }
+
+

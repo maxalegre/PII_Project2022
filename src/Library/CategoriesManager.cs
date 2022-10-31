@@ -6,12 +6,27 @@ namespace Library;
 public class CategoriesManager {
     private List<Category> categories { get; set; }= new List<Category>();
 
+    private static CategoriesManager instance;
+
+    public static CategoriesManager Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                instance = new CategoriesManager();
+            }
+
+            return instance;
+        }
+    }
     public CategoriesManager() {
 
     }
-    public void addCategorie(string nameCategorie){
+    public void addCategory(string nameCategorie){
         Category category = new Category(nameCategorie);
         categories.Add(category);
+        
     }
 
     public void getCategories() {

@@ -5,6 +5,20 @@ namespace Library
 {
     public class OffersManager
     {
+    private static OffersManager instance;
+
+    public static OffersManager Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                instance = new OffersManager();
+            }
+
+            return instance;
+        }
+    }
         public List<Offer> Offers = new List<Offer>();
 
 
@@ -13,8 +27,8 @@ namespace Library
         public void addOffer(Employee employee,string Description , double Remuneration, string category) {
             Offer offer = new Offer(employee,Description,Remuneration,category);
             this.Offers.Add(offer); 
-            CategoriesService categoriesService= new CategoriesService();
-            categoriesService.addCategory(category);
+            CategoriesManager categoriesManager= new CategoriesManager();
+            categoriesManager.addCategory(category);
         }
 
         public List<Offer> getoOffersByCategory(string category) {
@@ -32,9 +46,6 @@ namespace Library
             return offersByCategory;
         }
         
-        //Este metodo deberia estar en la clase Admin, pero la logica del mismo esta funcionando.
-        //En un futuro, hay que moverlo.
-        
 
         public  List<Offer> sortOffersByReputation()
         {
@@ -45,11 +56,7 @@ namespace Library
 
         }
     }}
-        /*public static List<Offers> SortByLocation()
-        {   
-            //Cuando haya una lista de offertas, se creara otra, donde las mismas esten ordenadas por
-            //distancia entre el trabajador y empleado.
-        }*/
+        
 
        
 
