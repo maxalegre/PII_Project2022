@@ -24,7 +24,7 @@ namespace Library
             return instance;
         }
     }
-    public ContractManager(){}
+    private ContractManager(){}
     public void createEmployeeContracts(string initDate, string finalDate, string jobs, string role)
     {
         if (string.Equals(role.ToLower(), "employee"))

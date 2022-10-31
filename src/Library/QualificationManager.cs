@@ -17,6 +17,6 @@ public sealed class QualificationManager
             return instance;
         }
     }
-    public QualificationManager(){}
+    private QualificationManager(){}
     
 }
