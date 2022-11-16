@@ -8,8 +8,6 @@ namespace Library
     /// </summary>
     public sealed class ContractManager 
     {
-    public List<Contract> employeeContracts = new List<Contract>();
-    public List<Contract> employerContracts = new List<Contract>();
     private static ContractManager instance;
 
     public static ContractManager Instance
@@ -27,12 +25,7 @@ namespace Library
     private ContractManager(){}
     public void createContracts(string initDate, string finalDate, string jobs, Employee employee, Employer employer)
     {
-        
-        Contract contract = new Contract (initDate, finalDate, jobs, employer, employee);
-        employee.Contract.Add(contract);
-        employer.Contract.Add(contract);
-       
-
+ 
        if (string.IsNullOrEmpty(initDate))
        {
             throw new ContractException ("Fecha inicial no válida");
@@ -45,31 +38,12 @@ namespace Library
        {
             throw new ContractException ("Trabajo no válido");
        }
+              
+        Contract contract = new Contract (initDate, finalDate, jobs, employer, employee);
+        employee.getContracts().Add(contract);
+        employer.getContracts().Add(contract);
 
     }
-    
-
-    public List<Contract>  GetEmployeeContracts()
-    {
-        foreach (Contract a in this.employeeContracts)
-        {
-            System.Console.WriteLine("El trabajador comenzó a trabajar el día: {0} como {1}", a.getInitDate(), a.jobs);
-        }
-        return employeeContracts;
-        
-    }
-
-    public List<Contract> getEmployerContracts()
-    {
-        foreach (Contract b in this.employerContracts)
-        {
-            System.Console.WriteLine("El empleador firmó el contrato el día: {0} como {1}", b.getInitDate(), b.jobs);
-        }
-        return employerContracts;
-    }
-    /// <summary>
-    /// genera lista y devulve los contratos de employers
-    /// </summary>
     
     }
 }

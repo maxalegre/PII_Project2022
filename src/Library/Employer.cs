@@ -6,8 +6,6 @@ namespace Library;
 public class Employer : User, IUser
 {
     public List<Qualification> Reviews = new List<Qualification>();
-    public List<Contract> Contract = new List<Contract>();
-
     public Employer (string name, string lastname, string id, string rol, string location, string contactnumber, string contactemail) 
     : base(name, lastname, id, rol, location, contactemail, contactnumber)
     {
@@ -99,7 +97,7 @@ public class Employer : User, IUser
                 
             }
        }
-     
+        
     }
     
 

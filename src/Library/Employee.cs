@@ -6,7 +6,6 @@ namespace Library;
 public class Employee : User, IUser
 {
     public List<Qualification> Reviews = new List<Qualification>();
-    public List<Contract> Contract = new List<Contract>();
     public bool hired = false; // Esto lo hice para certificar una contratacion
 
     public Employee (string name, string lastname, string id, string rol, string location, string contactnumber, string contactemail) 
@@ -65,13 +64,7 @@ public class Employee : User, IUser
         OffersManager.Instance.addOffer(this,description,remuneration,category);
     }
   
-    public void getEmployeeContracts(Employee employee)
-    {
-        foreach (Contract contract in ContractManager.Instance.employeeContracts)
-        {
-            System.Console.WriteLine(contract.IsValid);
-        }
-    }
+   
 
    
 }

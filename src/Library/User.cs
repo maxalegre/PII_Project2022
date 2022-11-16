@@ -13,6 +13,7 @@ public abstract class User
     public string Location;
     public string contactNumber;
     public string contactEmail;
+    private List<Contract> Contract = new List<Contract>();
    
 
     public User(string name, string lastname, string id, string rol, string location, string contactnumber, string contactemail) {
@@ -28,5 +29,8 @@ public abstract class User
     {
         return QualificationManager.Instance.getAverage(this.Reviews);
     }
-    
+    public List<Contract> getContracts()
+    {
+        return this.Contract;
+    }
 }
