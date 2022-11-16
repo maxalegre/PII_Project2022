@@ -9,14 +9,18 @@ namespace Library
         private string finalDate;
         public string jobs;
         public bool IsValid;
+        public bool Review = false;
+        public Employee employee;
+        public Employer employer;
 
-        public Contract(string initDate, string finalDate, string jobs)
+        public Contract(string initDate, string finalDate, string jobs, Employer employer, Employee employee)
         {
             this.initDate = initDate;
             this.finalDate = finalDate;
             this.jobs = jobs;
-        }
 
+        }
+        
        public string getInitDate()
        {
         return this.initDate;
@@ -25,6 +29,7 @@ namespace Library
        {
         return this.finalDate;
        }
+       
        public void setInitDate(string newInitDate)
        {
         this.initDate = newInitDate;
@@ -33,6 +38,7 @@ namespace Library
        {
         this.finalDate = newFinalDate;
        }
+       
        public void setJobs (string newJob)
        {
         this.jobs = newJob;
@@ -52,6 +58,13 @@ namespace Library
                 IsValid = true;
             }
         }
+        // Para el timer
+        public void toTimer (Employee employee, Employer employer)
+        {
+            this.employee = employee;
+            this.employer = employer;
+        }
+
 
     }
 }

@@ -8,8 +8,6 @@ namespace Library
     /// </summary>
     public sealed class ContractManager 
     {
-    public List<Contract> employeeContracts = new List<Contract>();
-    public List<Contract> employerContracts = new List<Contract>();
     private static ContractManager instance;
 
     public static ContractManager Instance
@@ -25,63 +23,27 @@ namespace Library
         }
     }
     private ContractManager(){}
-    public void createEmployeeContracts(string initDate, string finalDate, string jobs, string role)
+    public void createContracts(string initDate, string finalDate, string jobs, Employee employee, Employer employer)
     {
-        if (string.Equals(role.ToLower(), "employee"))
-        {
-            employeeContracts.Add(new Contract(initDate,finalDate,jobs));
-            if (string.IsNullOrEmpty(initDate))
-            {
-                throw new ContractException ("Fecha inicial no válida");
-            }
-            else if (string.IsNullOrEmpty(finalDate))
-            {
-                throw new ContractException ("Fecha final no válida");
-            }
-            else if (string.IsNullOrEmpty(jobs))
-            {
-                throw new ContractException ("Trabajo no válido");
-            }
-        }
-        else if (string.Equals(role.ToLower(), "employer"))
-        {
-            employerContracts.Add(new Contract(initDate,finalDate,jobs));
-            if (string.IsNullOrEmpty(initDate))
-            {
-                throw new ContractException ("Fecha inicial no válida");
-            }
-            else if (string.IsNullOrEmpty(finalDate))
-            {
-                throw new ContractException ("Fecha final no válida");
-            }
-            else if (string.IsNullOrEmpty(jobs))
-            {
-                throw new ContractException ("Trabajo no válido");
-            }
-        }
-       
-    }
+ 
+       if (string.IsNullOrEmpty(initDate))
+       {
+            throw new ContractException ("Fecha inicial no válida");
+       }
+       else if (string.IsNullOrEmpty(finalDate))
+       {
+            throw new ContractException ("Fecha final no válida");
+       }
+       else if (string.IsNullOrEmpty(jobs))
+       {
+            throw new ContractException ("Trabajo no válido");
+       }
+              
+        Contract contract = new Contract (initDate, finalDate, jobs, employer, employee);
+        employee.getContracts().Add(contract);
+        employer.getContracts().Add(contract);
 
-    public void GetEmployeeContracts()
-    {
-        List<Contract> listEmployee = new List<Contract>();
-        foreach (Contract a in this.employeeContracts)
-        {
-            System.Console.WriteLine("El trabajador comenzó a trabajar el día: {0} como {1}", a.getInitDate(), a.jobs);
-        }
-        
     }
-    /// <summary>
-    /// genera lista y devulve los contratos de employers
-    /// </summary>
-    public void GetEmployerContracts()
-    {
-        List<Contract> listEmployer = new List<Contract>();
-        foreach (Contract b in this.employerContracts)
-        {
-           System.Console.WriteLine("El empleador comenzó a trabajar el día: {0} como {1}", b.getInitDate(), b.jobs);
-        }
-        
-    }
+    
     }
 }

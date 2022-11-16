@@ -24,20 +24,28 @@ namespace Library
 
         private OffersManager(){
         }
-        public void addOffer(Employee employee,string Description , double Remuneration, string category) {
+        public void addOffer(Employee employee,string Description , double Remuneration, string category) 
+        {
             Offer offer = new Offer(employee,Description,Remuneration,category);
             this.Offers.Add(offer); 
             //CategoriesManager categoriesManager= new CategoriesManager();
             CategoriesManager.Instance.addCategory(category);
         }
-
-        public void getoOffersByCategory(string category) {
+         public void addOffer(Employer employer,string Description , double Remuneration, string category) 
+        {
+            Offer offer = new Offer(employer,Description,Remuneration,category);
+            this.Offers.Add(offer); 
+            //CategoriesManager categoriesManager= new CategoriesManager();
+            CategoriesManager.Instance.addCategory(category);
+        }
+        
+        public void getOffersByCategory(string category) {
             
             List<Offer> offersByCategory= new List<Offer>();
             
             foreach(Offer offer in this.Offers)
             {   
-                if(offer.Category== category)
+                if(offer.Category == category)
                 {
                      //offersByCategory.Add(offer);
                      Console.WriteLine($"Oferta: {offer.Description}\nNombre: {offer.employee.Name}\nApellido: {offer.employee.LastName}\nCategoria: {offer.Category} ");
@@ -46,7 +54,6 @@ namespace Library
             }
         }
         
-
         public  List<Offer> sortOffersByReputation()
         {
             List<Offer> offersByReputation= new List<Offer>();
@@ -55,6 +62,22 @@ namespace Library
             return SortedList;
 
         }
+
+        // Este metodo lo hice para devolver una lista. Funciona igual al getOffersByCategory, pero retorna una lista para 
+        // usarla en Employer
+        public List<Offer> getOffersCategories(string category)
+        {
+            List<Offer> categoriesOffer = new List<Offer>();
+            foreach (Offer offer in this.Offers)
+            {
+                if (offer.Category.Equals(category))
+                {
+                    categoriesOffer.Add(offer);
+                }
+            }
+            return categoriesOffer;
+        }
+        
     }}
         
 

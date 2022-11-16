@@ -19,4 +19,14 @@ public sealed class QualificationManager
     }
     private QualificationManager(){}
     
+    public double getAverage (List<Qualification> list)
+    {
+        double average = 0;
+        foreach (Qualification a in list)
+        {
+            average = average + a.Value;
+
+        }
+        return average/list.Count;
+    }
 }
