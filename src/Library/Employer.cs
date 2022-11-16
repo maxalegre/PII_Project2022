@@ -74,6 +74,7 @@ public class Employer : User, IUser
        OffersManager.Instance.getOffersByCategory(category);
        // acá recibe la lista de ofertas por reputación
        OffersManager.Instance.sortOffersByReputation();
+       
 
        //Elegir que oferta se acepta
        // mi idea acá es elegir de la lista de offers una oferta, sacarla de esa lista, y que ese offer al estar relacionado
@@ -82,15 +83,24 @@ public class Employer : User, IUser
        {
             // recorrer lista de ofertas por categoria
             // de esta lista de offers seleccionar una
-            System.Console.WriteLine("{0} => {1}", offer.Category, offer.employee);
+
+            System.Console.WriteLine("{0} => {1}", offer.Category, offer.employee.Name);
             System.Console.WriteLine("Seleccione un empleado a contratar:");
+
             // Comparo lo que se ingresa por consola y si es igual al nombre del employee lo contrata
+
             if (System.Console.ReadLine() == offer.employee.ToString())
             {
                 System.Console.WriteLine("{0} contratado", offer.employee);
                 offer.employee.hired = true;
                 // Ofrecer el contrato?????????
-                //ContractManager.Instance.createContracts(initDate, finalDate, offer.Category, role) ??
+                /*
+                System.Console.WriteLine("Ingrese fecha: ");
+                string initDate = System.Console.ReadLine();
+                System.Console.WriteLine("Ingrese su rol: ");
+                string role = System.Console.ReadLine();
+                ContractManager.Instance.createContracts(initDate, "-", offer.Category, role);
+                */
             }
        }
 
