@@ -4,6 +4,7 @@ public class Qualification
 {
     public int Value;
     public string Description;
+    
 
     public Qualification (int Qualification, string Description)
     {

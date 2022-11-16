@@ -13,6 +13,7 @@ public abstract class User
     public string Location;
     public string contactNumber;
     public string contactEmail;
+   
 
     public User(string name, string lastname, string id, string rol, string location, string contactnumber, string contactemail) {
         this.Name = name;
@@ -21,6 +22,11 @@ public abstract class User
         this.Location = location;
         this.contactNumber = contactnumber;
         this.contactEmail = contactemail;
+    }
+    
+    public double getQualy()
+    {
+        return QualificationManager.Instance.getAverage(this.Reviews);
     }
     
 }

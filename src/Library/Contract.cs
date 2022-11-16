@@ -10,12 +10,15 @@ namespace Library
         public string jobs;
         public bool IsValid;
         public bool Review = false;
+        public Employee employee;
+        public Employer employer;
 
-        public Contract(string initDate, string finalDate, string jobs)
+        public Contract(string initDate, string finalDate, string jobs, Employer employer, Employee employee)
         {
             this.initDate = initDate;
             this.finalDate = finalDate;
             this.jobs = jobs;
+
         }
         
        public string getInitDate()
@@ -55,6 +58,13 @@ namespace Library
                 IsValid = true;
             }
         }
+        // Para el timer
+        public void toTimer (Employee employee, Employer employer)
+        {
+            this.employee = employee;
+            this.employer = employer;
+        }
+
 
     }
 }

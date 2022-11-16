@@ -72,4 +72,6 @@ public class Employee : User, IUser
             System.Console.WriteLine(contract.IsValid);
         }
     }
+
+   
 }

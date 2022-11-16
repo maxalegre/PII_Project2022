@@ -11,9 +11,6 @@ namespace Library
     public List<Contract> employeeContracts = new List<Contract>();
     public List<Contract> employerContracts = new List<Contract>();
     private static ContractManager instance;
-    
-    
-
 
     public static ContractManager Instance
     {
@@ -31,44 +28,10 @@ namespace Library
     public void createContracts(string initDate, string finalDate, string jobs, Employee employee, Employer employer)
     {
         
-        Contract contract = new Contract (initDate, finalDate, jobs);
+        Contract contract = new Contract (initDate, finalDate, jobs, employer, employee);
         employee.Contract.Add(contract);
         employer.Contract.Add(contract);
-        /*
-        if (string.Equals(role.ToLower(), "employee"))
-        {
-            employeeContracts.Add(new Contract(initDate,finalDate,jobs));
-            if (string.IsNullOrEmpty(initDate))
-            {
-                throw new ContractException ("Fecha inicial no válida");
-            }
-            else if (string.IsNullOrEmpty(finalDate))
-            {
-                throw new ContractException ("Fecha final no válida");
-            }
-            else if (string.IsNullOrEmpty(jobs))
-            {
-                throw new ContractException ("Trabajo no válido");
-            }
-            
-        }
-        else if (string.Equals(role.ToLower(), "employer"))
-        {
-            employerContracts.Add(new Contract(initDate,finalDate,jobs));
-            if (string.IsNullOrEmpty(initDate))
-            {
-                throw new ContractException ("Fecha inicial no válida");
-            }
-            else if (string.IsNullOrEmpty(finalDate))
-            {
-                throw new ContractException ("Fecha final no válida");
-            }
-            else if (string.IsNullOrEmpty(jobs))
-            {
-                throw new ContractException ("Trabajo no válido");
-            }
-        }
-        */
+       
 
        if (string.IsNullOrEmpty(initDate))
        {
