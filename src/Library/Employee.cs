@@ -6,6 +6,7 @@ namespace Library;
 public class Employee : User, IUser
 {
     public List<Qualification> Reviews = new List<Qualification>();
+    public bool hired = false; // Esto lo hice para certificar una contratacion
 
     public Employee (string name, string lastname, string id, string rol, string location, string contactnumber, string contactemail) 
     : base(name, lastname, id, rol, location, contactemail, contactnumber)
@@ -43,6 +44,7 @@ public class Employee : User, IUser
             this.contactNumber = contactnumber;
             this.contactEmail = contactemail;
         }
+        
     }
     public void changeNumber(string newNumber)
     {
@@ -56,15 +58,15 @@ public class Employee : User, IUser
     public void AddQualification(Qualification calificacion){
         this.Reviews.Add(calificacion);
     }
-    public void addOffer(string description , double remuneration, string category)
+   
+    public void addOfferEmployee(string description, double remuneration, string category)
     {
-        //OffersManager offersManager= new OffersManager();
         OffersManager.Instance.addOffer(this,description,remuneration,category);
     }
    public void searchOffers(string category)
    {
     //OffersManager offersManager= new OffersManager();
-    OffersManager.Instance.getoOffersByCategory(category);
+    OffersManager.Instance.getOffersByCategory(category);
    }
     
 }

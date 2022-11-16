@@ -55,11 +55,47 @@ public class Employer : User, IUser
     public void AddQualification(Qualification calificacion){
         this.Reviews.Add(calificacion);
     }
-    public void getoOffersByCategory(string category)
+    public void getOffersByCategory(string category)
     {
         //OffersManager offersManager= new OffersManager();
-        OffersManager.Instance.getoOffersByCategory(category);
+        OffersManager.Instance.getOffersByCategory(category);
     }
+
+    public void addOfferEmployer (string description, double Remuneration, string category)
+    {
+        OffersManager.Instance.addOffer(this,description,Remuneration,category);
+
+    }
+    // ADD
+    public void searchEmployee (string category)
+    {
+       // El empleador debe recibir una lista de ofertas y seleccionar uno para contratar un employee.
+       // acá recibe la lista de ofertas por categoria
+       OffersManager.Instance.getOffersByCategory(category);
+       // acá recibe la lista de ofertas por reputación
+       OffersManager.Instance.sortOffersByReputation();
+
+       //Elegir que oferta se acepta
+       // mi idea acá es elegir de la lista de offers una oferta, sacarla de esa lista, y que ese offer al estar relacionado
+       // con un employee, ya lo pueda contratar.
+       foreach (Offer offer in OffersManager.Instance.getOffersCategories(category))
+       {
+            // recorrer lista de ofertas por categoria
+            // de esta lista de offers seleccionar una
+            System.Console.WriteLine("{0} => {1}", offer.Category, offer.employee);
+            System.Console.WriteLine("Seleccione un empleado a contratar:");
+            // Comparo lo que se ingresa por consola y si es igual al nombre del employee lo contrata
+            if (System.Console.ReadLine() == offer.employee.ToString())
+            {
+                System.Console.WriteLine("{0} contratado", offer.employee);
+                offer.employee.hired = true;
+                // Ofrecer el contrato?????????
+                //ContractManager.Instance.createContracts(initDate, finalDate, offer.Category, role) ??
+            }
+       }
+
+    }
+    
 }
 
 
