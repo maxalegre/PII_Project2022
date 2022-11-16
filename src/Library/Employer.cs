@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 namespace Library;
 
 public class Employer : User, IUser
 {
     public List<Qualification> Reviews = new List<Qualification>();
+    public List<Contract> Contract = new List<Contract>();
 
     public Employer (string name, string lastname, string id, string rol, string location, string contactnumber, string contactemail) 
     : base(name, lastname, id, rol, location, contactemail, contactnumber)
@@ -67,45 +69,42 @@ public class Employer : User, IUser
 
     }
     // ADD
-    public void searchEmployee (string category)
+    public void searchOffers (string category)
     {
        // El empleador debe recibir una lista de ofertas y seleccionar uno para contratar un employee.
-       // acá recibe la lista de ofertas por categoria
-       OffersManager.Instance.getOffersByCategory(category);
-       // acá recibe la lista de ofertas por reputación
-       OffersManager.Instance.sortOffersByReputation();
-       
-
+       var offers = OffersManager.Instance.getOffersCategories(category);
+       int counter = 1;
        //Elegir que oferta se acepta
        // mi idea acá es elegir de la lista de offers una oferta, sacarla de esa lista, y que ese offer al estar relacionado
        // con un employee, ya lo pueda contratar.
-       foreach (Offer offer in OffersManager.Instance.getOffersCategories(category))
+       foreach (Offer offer in offers)
        {
-            // recorrer lista de ofertas por categoria
-            // de esta lista de offers seleccionar una
-
-            System.Console.WriteLine("{0} => {1}", offer.Category, offer.employee.Name);
+            System.Console.WriteLine("{0} - {1} => {2}", counter, offer.Category, offer.employee.Name);
+            counter++;
+       }
+       hireEmployee(offers);
+    }
+       public void hireEmployee (List<Offer> offers)
+       {
             System.Console.WriteLine("Seleccione un empleado a contratar:");
 
             // Comparo lo que se ingresa por consola y si es igual al nombre del employee lo contrata
-
-            if (System.Console.ReadLine() == offer.employee.ToString())
+            
+            var offer = offers.ElementAt(int.Parse(System.Console.ReadLine())-1);
             {
-                System.Console.WriteLine("{0} contratado", offer.employee);
+                System.Console.WriteLine("{0} contratado", offer.Category);
                 offer.employee.hired = true;
-                // Ofrecer el contrato?????????
-                /*
-                System.Console.WriteLine("Ingrese fecha: ");
-                string initDate = System.Console.ReadLine();
-                System.Console.WriteLine("Ingrese su rol: ");
-                string role = System.Console.ReadLine();
-                ContractManager.Instance.createContracts(initDate, "-", offer.Category, role);
-                */
+                
+                ContractManager.Instance.createContracts("init date", "-", offer.Category, offer.employee, this);
+                
             }
        }
-
+    
     }
     
-}
+
+    
+    
+
 
 

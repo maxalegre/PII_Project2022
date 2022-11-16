@@ -11,6 +11,9 @@ namespace Library
     public List<Contract> employeeContracts = new List<Contract>();
     public List<Contract> employerContracts = new List<Contract>();
     private static ContractManager instance;
+    
+    
+
 
     public static ContractManager Instance
     {
@@ -25,8 +28,13 @@ namespace Library
         }
     }
     private ContractManager(){}
-    public void createContracts(string initDate, string finalDate, string jobs, string role)
+    public void createContracts(string initDate, string finalDate, string jobs, Employee employee, Employer employer)
     {
+        
+        Contract contract = new Contract (initDate, finalDate, jobs);
+        employee.Contract.Add(contract);
+        employer.Contract.Add(contract);
+        /*
         if (string.Equals(role.ToLower(), "employee"))
         {
             employeeContracts.Add(new Contract(initDate,finalDate,jobs));
@@ -42,6 +50,7 @@ namespace Library
             {
                 throw new ContractException ("Trabajo no válido");
             }
+            
         }
         else if (string.Equals(role.ToLower(), "employer"))
         {
@@ -59,29 +68,45 @@ namespace Library
                 throw new ContractException ("Trabajo no válido");
             }
         }
-       
-    }
+        */
 
-    public void GetEmployeeContracts()
+       if (string.IsNullOrEmpty(initDate))
+       {
+            throw new ContractException ("Fecha inicial no válida");
+       }
+       else if (string.IsNullOrEmpty(finalDate))
+       {
+            throw new ContractException ("Fecha final no válida");
+       }
+       else if (string.IsNullOrEmpty(jobs))
+       {
+            throw new ContractException ("Trabajo no válido");
+       }
+
+    }
+    
+
+    public List<Contract>  GetEmployeeContracts()
     {
-        List<Contract> listEmployee = new List<Contract>();
         foreach (Contract a in this.employeeContracts)
         {
             System.Console.WriteLine("El trabajador comenzó a trabajar el día: {0} como {1}", a.getInitDate(), a.jobs);
         }
+        return employeeContracts;
         
+    }
+
+    public List<Contract> getEmployerContracts()
+    {
+        foreach (Contract b in this.employerContracts)
+        {
+            System.Console.WriteLine("El empleador firmó el contrato el día: {0} como {1}", b.getInitDate(), b.jobs);
+        }
+        return employerContracts;
     }
     /// <summary>
     /// genera lista y devulve los contratos de employers
     /// </summary>
-    public void GetEmployerContracts()
-    {
-        List<Contract> listEmployer = new List<Contract>();
-        foreach (Contract b in this.employerContracts)
-        {
-           System.Console.WriteLine("El empleador comenzó a trabajar el día: {0} como {1}", b.getInitDate(), b.jobs);
-        }
-        
-    }
+    
     }
 }

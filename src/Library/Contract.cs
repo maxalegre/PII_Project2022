@@ -9,6 +9,7 @@ namespace Library
         private string finalDate;
         public string jobs;
         public bool IsValid;
+        public bool Review = false;
 
         public Contract(string initDate, string finalDate, string jobs)
         {
@@ -16,7 +17,7 @@ namespace Library
             this.finalDate = finalDate;
             this.jobs = jobs;
         }
-
+        
        public string getInitDate()
        {
         return this.initDate;
@@ -25,6 +26,7 @@ namespace Library
        {
         return this.finalDate;
        }
+       
        public void setInitDate(string newInitDate)
        {
         this.initDate = newInitDate;
@@ -33,6 +35,7 @@ namespace Library
        {
         this.finalDate = newFinalDate;
        }
+       
        public void setJobs (string newJob)
        {
         this.jobs = newJob;
