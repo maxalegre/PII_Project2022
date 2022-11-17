@@ -5,7 +5,6 @@ namespace Library;
 
 public class Employee : User, IUser
 {
-    public List<Qualification> Reviews = new List<Qualification>();
     public bool hired = false; // Esto lo hice para certificar una contratacion
 
     public Employee (string name, string lastname, string id, string rol, string location, string contactnumber, string contactemail) 
