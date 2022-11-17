@@ -66,27 +66,4 @@ public sealed class UserManager
         }
         return false;
     }
-
-    public List<IUser> GetEmployees() {
-        List<IUser> list = new List<IUser>();
-        foreach (IUser item in this.Users)
-        {
-            if (item is Employee)
-            {
-                list.Add(item);
-            }
-        }
-        return list;
-    }
-    public List<IUser> GetEmployers() {
-        List<IUser> list = new List<IUser>();
-        foreach (IUser item in this.Users)
-        {
-            if (item is Employer)
-            {
-                list.Add(item);
-            }
-        }
-        return list;
-    }
 }
