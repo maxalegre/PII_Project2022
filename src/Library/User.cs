@@ -13,8 +13,9 @@ public abstract class User
     public string Location;
     public string contactNumber;
     public string contactEmail;
+    public List<Qualification> Reviews = new List<Qualification>();
     private List<Contract> Contract = new List<Contract>();
-   
+
 
     public User(string name, string lastname, string id, string rol, string location, string contactnumber, string contactemail) {
         this.Name = name;

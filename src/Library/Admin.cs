@@ -2,7 +2,7 @@ using System;
 
 namespace Library;
 
-public sealed class Admin
+public class Admin
 {
     private static Admin instance;
 
@@ -19,4 +19,13 @@ public sealed class Admin
         }
     }
    
+   public void addCategory(string category)
+   {
+        CategoriesManager.Instance.addCategory(category);
+   }
+
+   public void removeOffer()
+   {
+        OffersManager.Instance.removeOffer();
+   }
 }

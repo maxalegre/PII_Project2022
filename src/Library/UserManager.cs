@@ -37,6 +37,36 @@ public sealed class UserManager
         }
     }
 
+    public IUser Login(string id)
+    {
+        foreach (IUser item in this.Users)
+        {
+            if (CheckCredentials(item, id))
+            {
+                return item;
+            }
+        }
+        return null;
+    }
+
+    public bool CheckCredentials(IUser user, string id) {
+        if (user is Employee)
+        {
+            if (((Employee)user).ID.Equals(id, StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
+        }
+        else
+        {
+            if (((Employer)user).ID.Equals(id, StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public List<IUser> GetEmployees() {
         List<IUser> list = new List<IUser>();
         foreach (IUser item in this.Users)

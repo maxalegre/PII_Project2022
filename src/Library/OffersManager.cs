@@ -31,16 +31,37 @@ namespace Library
             //CategoriesManager categoriesManager= new CategoriesManager();
             CategoriesManager.Instance.addCategory(category);
         }
-         public void addOffer(Employer employer,string Description , double Remuneration, string category) 
+        
+        public void addOffer(Employer employer,string Description , double Remuneration, string category) 
         {
             Offer offer = new Offer(employer,Description,Remuneration,category);
             this.Offers.Add(offer); 
             //CategoriesManager categoriesManager= new CategoriesManager();
             CategoriesManager.Instance.addCategory(category);
         }
+
+        public void removeOffer() {
+            PrintOffers();
+            System.Console.WriteLine("\nIndique el numero de la oferta a eliminar: ");
+            this.Offers.RemoveAt(int.Parse(System.Console.ReadLine())-1);
+        }
+
+        public void removeOffer(Offer offer) {
+            Offers.Remove(offer);
+        }
+
+        public void PrintOffers()
+        {
+            int count = 1;
+            foreach (Offer item in this.Offers)
+            {
+                System.Console.WriteLine($"{count} - {item.employee.Name} => {item.Description}\n");
+                count++;
+            }
+        }
         
-        public void getOffersByCategory(string category) {
-            
+        /*
+        public void getOffersByCategory(string category) {            
             List<Offer> offersByCategory= new List<Offer>();
             
             foreach(Offer offer in this.Offers)
@@ -53,6 +74,7 @@ namespace Library
 
             }
         }
+        */
         
         public  List<Offer> sortOffersByReputation()
         {
