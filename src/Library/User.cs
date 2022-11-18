@@ -25,6 +25,20 @@ public abstract class User
         this.contactNumber = contactnumber;
         this.contactEmail = contactemail;
     }
+
+    public void changeNumber(string newNumber)
+    {
+        this.contactNumber = newNumber;
+    }
+    public void changeEmail(string newEmail)
+    {
+        this.contactEmail = newEmail;
+    }
+
+    public void AddQualification(Qualification calificacion)
+    {
+        this.Reviews.Add(calificacion);
+    }
     
     public double getQualy()
     {
