@@ -42,24 +42,6 @@ public class Employer : User, IUser
             this.contactEmail = contactemail;
         }
     }
-    public void changeNumber(string newNumber)
-    {
-        this.contactNumber = newNumber;
-    }
-    public void changeEmail(string newEmail)
-    {
-        this.contactEmail = newEmail;
-    }
-    
-    public void AddQualification(Qualification calificacion){
-        this.Reviews.Add(calificacion);
-    }
-
-    public void addOfferEmployer (string description, double Remuneration, string category)
-    {
-        OffersManager.Instance.addOffer(this,description,Remuneration,category);
-
-    }
     // ADD
     public void searchOffers (string category)
     {
@@ -76,23 +58,22 @@ public class Employer : User, IUser
        }
        hireEmployee(offers);
     }
-       public void hireEmployee (List<Offer> offers)
-       {
-            System.Console.WriteLine("Seleccione un empleado a contratar:");
+    public void hireEmployee (List<Offer> offers)
+    {
+        System.Console.WriteLine("Seleccione un empleado a contratar:");
 
-            // Comparo lo que se ingresa por consola y si es igual al nombre del employee lo contrata
-            
-            var offer = offers.ElementAt(int.Parse(System.Console.ReadLine())-1);
-            {
-                System.Console.WriteLine("{0} contratado", offer.Category);
-                offer.employee.hired = true;
-                
-                ContractManager.Instance.createContracts("init date", "-", offer.Category, offer.employee, this);
-                
-            }
-       }
+        // Comparo lo que se ingresa por consola y si es igual al nombre del employee lo contrata
         
+        var offer = offers.ElementAt(int.Parse(System.Console.ReadLine())-1);
+        {
+            System.Console.WriteLine("{0} contratado", offer.Category);
+            offer.employee.hired = true;
+            
+            ContractManager.Instance.createContracts("init date", "-", offer.Category, offer.employee, this);
+            
+        }
     }
+}
     
 
     

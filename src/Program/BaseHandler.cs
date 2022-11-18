@@ -80,6 +80,8 @@ namespace Ucu.Poo.TelegramBot
             }
 
             return this.Keywords.Any(s => message.Text.Split(" ")[0].Equals(s, StringComparison.InvariantCultureIgnoreCase));
+
+          
         }
 
         /// <summary>

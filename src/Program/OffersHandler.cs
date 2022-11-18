@@ -1,4 +1,6 @@
+
 using System;
+
 using Telegram.Bot.Types;
 using Library;
 namespace Ucu.Poo.TelegramBot
@@ -36,6 +38,7 @@ namespace Ucu.Poo.TelegramBot
                 concString+= $"Name: {offer.employee.Name} | Description: {offer.Description} | Remuneration: {offer.Remuneration}\n" ;
             }
             response = concString;
+
         }
     }
 }
