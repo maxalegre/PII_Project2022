@@ -16,6 +16,7 @@ namespace Library.Test
             Contract contract = new Contract ("18/11/2022", "-","Jardinería", employer, employee);
         }
 
+        // Ver este metodo. Capaz que en vez de poner fecha "-", podriamos ver la manera de que se genere solo.
         [Test]
         public void isValidTest()
         {
