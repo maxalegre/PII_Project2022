@@ -18,7 +18,7 @@ using Library;
          empleado.addOfferEmployee("Cualquier cosa", 2312.21,"Jardineria");
 
          Employer employer= new Employer("Jose", "Ubiedo","347223","Empleador","Montevideo","0992323","josejose@gmail");
-         employer.getOffersByCategory("Jardineria");
+         //employer.getOffersByCategory("Jardineria");
         
          
         }
