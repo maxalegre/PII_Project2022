@@ -1,3 +1,6 @@
+
+using System;
+
 using Telegram.Bot.Types;
 using Library;
 namespace Ucu.Poo.TelegramBot
@@ -24,8 +27,18 @@ namespace Ucu.Poo.TelegramBot
         /// <returns>true si el mensaje fue procesado; false en caso contrario.</returns>
         protected override void InternalHandle(Message message, out string response)
         {
-            var list= OffersManager.Instance.getOffersCategories("Jardineria");
-            response = string.Join( ",", list);;
+            var parameters = message.Text.Split(" ");
+            
+            Console.WriteLine(parameters);
+            
+            var list= OffersManager.Instance.getOffersCategories(parameters[1]);
+            var concString= "";
+            foreach(Offer offer in list)
+            {
+                concString+= $"Name: {offer.employee.Name} | Description: {offer.Description} | Remuneration: {offer.Remuneration}\n" ;
+            }
+            response = concString;
+
         }
     }
 }
