@@ -48,4 +48,15 @@ public abstract class User
     {
         return this.Contract;
     }
+    public void Qualify(Contract contract, int rating, string comment)
+    {
+        if (/*Si el usuario es empleador*/)
+        {
+            new EmployeeQualification(contract.employee, rating, comment, contract);
+        }
+        if (/*Si el usuario es empleado*/)
+        {
+            new EmployerQualification(contract.employer, rating, comment, contract);
+        }
+    }
 }

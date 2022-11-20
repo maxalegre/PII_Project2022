@@ -12,6 +12,8 @@ namespace Library
         public bool Review = false;
         public Employee employee;
         public Employer employer;
+        public bool employeeReviewed = false;
+        public bool employerReviewed = false;
 
         public Contract(string initDate, string finalDate, string jobs, Employer employer, Employee employee)
         {
@@ -56,15 +58,17 @@ namespace Library
             else 
             {
                 IsValid = true;
+                var timeout = new TO();
+                timeout.contract = this;
+                var timer = new CountdownTimer();
+                timer.Register(60000,timeout);
             }
         }
-        // Para el timer
+        /* Para el timer
         public void toTimer (Employee employee, Employer employer)
         {
             this.employee = employee;
             this.employer = employer;
-        }
-
-
+        }*/
     }
 }
