@@ -13,7 +13,7 @@ using Library;
         public void addCategoryErrorTest()
         {
             const string expected = "Mecanico";
-            CategoriesManager.Instance.addCategory(expected.ToUpper());
+            CategoriesManager.Instance.addCategory("Jardinero");
             Assert.Contains(expected, CategoriesManager.Instance.getCategories());
             
         }
