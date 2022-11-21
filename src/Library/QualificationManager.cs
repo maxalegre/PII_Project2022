@@ -19,6 +19,17 @@ public sealed class QualificationManager
     }
     private QualificationManager(){}
     
+    public void Qualify(IUser user, Contract contract, int rating, string comment)
+    {
+        if (user is Employer && user == contract.employer)
+        {
+            
+        }
+        if (user is Employee && user == contract.employee)
+        {
+            
+        }
+    }
     public double getAverage (List<Qualification> list)
     {
         double average = 0;

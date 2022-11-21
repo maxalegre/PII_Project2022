@@ -43,15 +43,5 @@ public abstract class User
         return QualificationManager.Instance.getAverage(this.Reviews);
     }
     public abstract List<Contract> getContracts();
-    public void Qualify(IUser user, Contract contract, int rating, string comment)
-    {
-        if (user is Employer && user == contract.employer)
-        {
-            new EmployeeQualification(contract.employee, rating, comment, contract);
-        }
-        if (user is Employee && user == contract.employee)
-        {
-            new EmployerQualification(contract.employer, rating, comment, contract);
-        }
-    }
+    public abstract void Qualify(Contract contract, int rating, string comment);
 }

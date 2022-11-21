@@ -54,4 +54,9 @@ public class Employee : User, IUser
     {
         return ContractManager.Instance.getEmployeeContracts(this);
     }
+
+    public override void Qualify(Contract contract, int rating, string comment)
+    {
+        QualificationManager.Instance.Qualify(this, contract, rating, comment);
+    }
 }
