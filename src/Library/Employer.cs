@@ -73,6 +73,10 @@ public class Employer : User, IUser
             
         }
     }
+    public override List<Contract> getContracts()
+    {
+        return ContractManager.Instance.getEmployerContracts(this);
+    }
 }
     
 

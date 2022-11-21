@@ -14,8 +14,6 @@ public abstract class User
     public string contactNumber;
     public string contactEmail;
     public List<Qualification> Reviews = new List<Qualification>();
-    private List<Contract> Contract = new List<Contract>();
-
 
     public User(string name, string lastname, string id, string rol, string location, string contactnumber, string contactemail) {
         this.Name = name;
@@ -44,17 +42,14 @@ public abstract class User
     {
         return QualificationManager.Instance.getAverage(this.Reviews);
     }
-    public List<Contract> getContracts()
+    public abstract List<Contract> getContracts();
+    public void Qualify(IUser user, Contract contract, int rating, string comment)
     {
-        return this.Contract;
-    }
-    public void Qualify(Contract contract, int rating, string comment)
-    {
-        if (/*Si el usuario es empleador*/)
+        if (user is Employer && user == contract.employer)
         {
             new EmployeeQualification(contract.employee, rating, comment, contract);
         }
-        if (/*Si el usuario es empleado*/)
+        if (user is Employee && user == contract.employee)
         {
             new EmployerQualification(contract.employer, rating, comment, contract);
         }

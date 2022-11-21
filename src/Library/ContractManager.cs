@@ -22,6 +22,7 @@ namespace Library
             return instance;
         }
     }
+    public List<Contract> contracts = new List<Contract>();
     private ContractManager(){}
     public void createContracts(string initDate, string finalDate, string jobs, Employee employee, Employer employer)
     {
@@ -40,10 +41,32 @@ namespace Library
        }
               
         Contract contract = new Contract (initDate, finalDate, jobs, employer, employee);
-        employee.getContracts().Add(contract);
-        employer.getContracts().Add(contract);
-
+        this.contracts.Add(contract);
     }
-    
+    public List<Contract> getEmployeeContracts(Employee employee)
+    {
+        List<Contract> employeeContractlist = new List<Contract>();
+        foreach (Contract contract in this.contracts)
+        {
+            if (contract.employee == employee)
+            {
+                employeeContractlist.Add(contract);
+            }
+        }
+        return employeeContractlist;
+    }
+    public List<Contract> getEmployerContracts(Employer employer)
+    {
+        List<Contract> employerContractlist = new List<Contract>();
+        foreach (Contract contract in this.contracts)
+        {
+            if (contract.employer == employer)
+            {
+                employerContractlist.Add(contract);
+            }
+        }
+        return employerContractlist;
+    }
+
     }
 }

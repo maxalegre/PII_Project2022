@@ -49,4 +49,9 @@ public class Employee : User, IUser
     {
         OffersManager.Instance.addOffer(this,description,remuneration,category);
     }
+
+    public override List<Contract> getContracts()
+    {
+        return ContractManager.Instance.getEmployeeContracts(this);
+    }
 }
