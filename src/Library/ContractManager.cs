@@ -23,7 +23,7 @@ namespace Library
         }
     }
     private ContractManager(){}
-    public void createContracts(string initDate, string finalDate, string jobs, Employee employee, Employer employer)
+    public Contract createContracts(string initDate, string finalDate, string jobs, Employee employee, Employer employer)
     {
  
        if (string.IsNullOrEmpty(initDate))
@@ -39,10 +39,10 @@ namespace Library
             throw new ContractException ("Trabajo no válido");
        }
               
-        Contract contract = new Contract (initDate, finalDate, jobs, employer, employee);
+        Contract contract = new Contract (initDate, finalDate, jobs, employee, employer);
         employee.getContracts().Add(contract);
         employer.getContracts().Add(contract);
-
+        return contract;
     }
     
     }

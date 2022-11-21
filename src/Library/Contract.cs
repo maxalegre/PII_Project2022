@@ -13,7 +13,7 @@ namespace Library
         public Employee employee;
         public Employer employer;
 
-        public Contract(string initDate, string finalDate, string jobs, Employer employer, Employee employee)
+        public Contract(string initDate, string finalDate, string jobs, Employee employee, Employer employer)
         {
             this.initDate = initDate;
             this.finalDate = finalDate;

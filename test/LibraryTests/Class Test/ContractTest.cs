@@ -13,7 +13,23 @@ namespace Library.Test
             // Creo employer
             Employer employer = new Employer ("Cristiano", "Ronaldo", "CR7", "employer", "Manchester", "12345678", "CR7@gmail.com");
             // Test de creación de contrato
-            Contract contract = new Contract ("18/11/2022", "-","Jardinería", employer, employee);
+            Contract expected = new Contract ("18/11/2022", "-","Jardinería", employee, employer);
+            Contract contract = ContractManager.Instance.createContracts("18/11/2022", "-","Jardinería", employee, employer);
+            Assert.AreEqual(expected, contract);
+            
+        }
+        [Test]
+        public void createContractsError()
+        {
+            Employee employee = new Employee ("Gonzalo", "Cañete", "gonza.cañete", "employee", "Montevideo","099701004","gonzalo@gmail.com");
+            // Creo employer
+            Employer employer = new Employer ("Cristiano", "Ronaldo", "CR7", "employer", "Manchester", "12345678", "CR7@gmail.com");
+            // Test de creación de contrato
+            Contract contract = new Contract ("18/11/2022", "-","Jardinería", employee, employer);
+            Contract expected = new Contract ("", "-","Jardinería", employee, employer);
+            // Genera error al crear contrato.
+            Assert.AreEqual (contract, expected);
+            //Assert.IsEmpty (contract.getInitDate(), "InitDate Error");
         }
 
         // Ver este metodo. Capaz que en vez de poner fecha "-", podriamos ver la manera de que se genere solo.
@@ -23,7 +39,7 @@ namespace Library.Test
             const string expected = "-";
             Employee employee = new Employee ("Gonzalo", "Cañete", "gonza.cañete", "employee", "Montevideo","099701004","gonzalo@gmail.com");
             Employer employer = new Employer ("Cristiano", "Ronaldo", "CR7", "employer", "Manchester", "12345678", "CR7@gmail.com");
-            Contract contract = new Contract("18/11/2022", "-","Jardineria", employer, employee);
+            Contract contract = new Contract("18/11/2022", "-","Jardineria", employee, employer);
             Assert.AreEqual(expected, contract.getFinalDate());
         }
 
@@ -33,7 +49,7 @@ namespace Library.Test
             const string expected = "-";
             Employee employee = new Employee ("Gonzalo", "Cañete", "gonza.cañete", "employee", "Montevideo","099701004","gonzalo@gmail.com");
             Employer employer = new Employer ("Cristiano", "Ronaldo", "CR7", "employer", "Manchester", "12345678", "CR7@gmail.com");
-            Contract contract = new Contract("18/11/2022", "18/11/2022","Jardineria", employer, employee);
+            Contract contract = new Contract("18/11/2022", "18/11/2022","Jardineria", employee, employer);
             Assert.AreEqual(expected, contract.getFinalDate());
         }
 
@@ -42,7 +58,7 @@ namespace Library.Test
         {
             Employee employee = new Employee ("Gonzalo", "Cañete", "gonza.cañete", "employee", "Montevideo","099701004","gonzalo@gmail.com");
             Employer employer = new Employer ("Cristiano", "Ronaldo", "CR7", "employer", "Manchester", "12345678", "CR7@gmail.com");
-            Contract contract = new Contract("","18/11/2022","Jardineria", employer, employee);
+            Contract contract = new Contract("","18/11/2022","Jardineria", employee, employer);
             Assert.IsEmpty(contract.getInitDate(),"Exception");
             //Assert.IsNull(contract.getInitDate(),"Exception");
         }
@@ -54,7 +70,7 @@ namespace Library.Test
             const string finalDate = "18/11/2022";
             Employee employee = new Employee ("Gonzalo", "Cañete", "gonza.cañete", "employee", "Montevideo","099701004","gonzalo@gmail.com");
             Employer employer = new Employer ("Cristiano", "Ronaldo", "CR7", "employer", "Manchester", "12345678", "CR7@gmail.com");
-            Contract contract = new Contract("18/11/2022","18/11/2022","Jardineria", employer, employee);
+            Contract contract = new Contract("18/11/2022","18/11/2022","Jardineria", employee, employer);
 
             // Compruebo que el metodo getInitDate me devuelva lo que espero
             Assert.AreEqual(initDate, contract.getInitDate());
@@ -71,7 +87,7 @@ namespace Library.Test
             Employee employee = new Employee ("Gonzalo", "Cañete", "gonza.cañete", "employee", "Montevideo","099701004","gonzalo@gmail.com");
             Employer employer = new Employer ("Cristiano", "Ronaldo", "CR7", "employer", "Manchester", "12345678", "CR7@gmail.com");
             // Acá le ingrese la fecha inicial 18/11/2022 y la fecha final 18/11/2022
-            Contract contract = new Contract("18/11/2022","18/11/2022","Jardineria", employer, employee);
+            Contract contract = new Contract("18/11/2022","18/11/2022","Jardineria", employee, employer);
             // Aplico el metodo set para cambiarlas a lo que seria mi expected
             contract.setInitDate("20/11/2022");
             contract.setFinalDate("25/11/2022");
@@ -81,5 +97,6 @@ namespace Library.Test
             //System.Console.WriteLine(contract.getInitDate());
             //System.Console.WriteLine(contract.getFinalDate());
         }
+
     }
 }
