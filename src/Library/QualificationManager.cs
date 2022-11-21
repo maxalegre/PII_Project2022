@@ -19,7 +19,7 @@ public sealed class QualificationManager
     }
     private QualificationManager(){}
     
-    public void Qualify(IUser user, Contract contract, int rating, string comment)
+    public void Qualify(IUser user, int rating, string comment)
     {
         if (user is Employer && user == contract.employer)
         {
@@ -38,5 +38,41 @@ public sealed class QualificationManager
             average = average + a.rating;
         }
         return average/list.Count;
+    }
+    public void Qualification(IUser user, int rating, string comment, Contract contract)
+    {
+        if (rating <= 5 && rating >= 1)
+        {
+            if (user is Employee)
+            {
+                if (contract.employeeReviewed == false)
+                {
+                var review = new Qualification(rating, comment);
+                contract.employeeReviewed = true;
+                contract.employee.AddQualification(review);
+                }
+                else
+                {
+                    throw new QualificationException("Ya existe una review para el empleado");
+                }
+            if (user is Employer)
+            {
+                if (contract.employerReviewed == false)
+                {
+                var review = new Qualification(rating, comment);
+                contract.employerReviewed = true;
+                contract.employer.AddQualification(review);
+                }
+                else
+                {
+                    throw new QualificationException("Ya existe una review para el empleador");
+                }
+            }
+        }
+        else
+        {
+            throw new QualificationException("El rating de la review esta fuera de rango (1 a 5)");
+        }
+    }
     }
 }

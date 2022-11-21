@@ -77,11 +77,6 @@ public class Employer : User, IUser
     {
         return ContractManager.Instance.getEmployerContracts(this);
     }
-
-   public override void Qualify(Contract contract, int rating, string comment)
-    {
-        QualificationManager.Instance.Qualify(this, contract, rating, comment);
-    }
 }
     
 

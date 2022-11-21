@@ -1,4 +1,4 @@
-using System;
+/*using System;
 using System.Collections.Generic;
 using Library;
 
@@ -27,4 +27,4 @@ public class EmployerQualification : Qualification
             //mensaje de error si el rating esta fuera de su rango (1 a 5)
         }
     }
-}
+}*/

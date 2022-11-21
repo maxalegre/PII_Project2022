@@ -4,5 +4,9 @@ public class Qualification
 {
     public int rating;
     public string comment;
-    public Contract contract;
+    public Qualification(int rating, string comment)
+    {
+        this.rating = rating;
+        this.comment = comment;
+    }
 }
