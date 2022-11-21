@@ -18,18 +18,7 @@ public sealed class QualificationManager
         }
     }
     private QualificationManager(){}
-    
-    public void Qualify(IUser user, int rating, string comment)
-    {
-        if (user is Employer && user == contract.employer)
-        {
-            
-        }
-        if (user is Employee && user == contract.employee)
-        {
-            
-        }
-    }
+
     public double getAverage (List<Qualification> list)
     {
         double average = 0;
@@ -47,9 +36,8 @@ public sealed class QualificationManager
             {
                 if (contract.employeeReviewed == false)
                 {
-                var review = new Qualification(rating, comment);
-                contract.employeeReviewed = true;
-                contract.employee.AddQualification(review);
+                    contract.employeeReviewed = true;
+                    contract.employee.AddQualification(new Qualification(rating, comment));
                 }
                 else
                 {
@@ -59,9 +47,8 @@ public sealed class QualificationManager
             {
                 if (contract.employerReviewed == false)
                 {
-                var review = new Qualification(rating, comment);
-                contract.employerReviewed = true;
-                contract.employer.AddQualification(review);
+                    contract.employerReviewed = true;
+                    contract.employer.AddQualification(new Qualification(rating, comment));
                 }
                 else
                 {

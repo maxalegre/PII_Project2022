@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace Library;
 
-public abstract class User
+public abstract class User : IUser
 {
     public string Name;
     public string LastName;
