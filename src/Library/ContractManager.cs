@@ -67,6 +67,32 @@ namespace Library
         }
         return employerContractlist;
     }
+    
+    public List<Contract> getValidContracts(IUser user)
+    {
+        List<Contract> list = new List<Contract>();
+        foreach (Contract item in this.contracts)
+        {
+            if (item.IsValid == true)
+            {    
+                if (item.employer == ((Employer)user) || item.employee == ((Employee)user) )
+                {
+                    list.Add(item);
+                }
+            }
+        }
+        return list;
+    }
+
+    public void PrintContracts(List<Contract> list)
+    {
+        int count = 1;
+        foreach (Contract item in list)
+        {
+            System.Console.WriteLine($"{count} - {item.employer} ha contratado a {item.employee} para realizar el trabajo de {item.jobs}\n");
+            count++;
+        }
+    }
 
     }
 }
