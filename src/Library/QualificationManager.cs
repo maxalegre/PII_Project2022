@@ -30,6 +30,8 @@ public sealed class QualificationManager
     }
     public void Qualification(IUser user, int rating, string comment, Contract contract)
     {
+        // User es el que esta haciendo la review.
+        // El que sera calificado se encuentra dentro de contract.
         if (rating <= 5 && rating >= 1)
         {
             if (user is Employee)
