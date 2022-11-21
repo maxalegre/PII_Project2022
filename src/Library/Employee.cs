@@ -45,25 +45,8 @@ public class Employee : User, IUser
         }
         
     }
-    public void changeNumber(string newNumber)
-    {
-        this.contactNumber = newNumber;
-    }
-    public void changeEmail(string newEmail)
-    {
-        this.contactEmail = newEmail;
-    }
-   
-    public void AddQualification(Qualification calificacion){
-        this.Reviews.Add(calificacion);
-    }
-   
-    public void addOfferEmployee(string description, double remuneration, string category)
+    public void addOffer(string description, double remuneration, string category)
     {
         OffersManager.Instance.addOffer(this,description,remuneration,category);
     }
-  
-   
-
-   
 }
