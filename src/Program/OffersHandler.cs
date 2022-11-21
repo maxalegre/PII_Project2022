@@ -14,7 +14,7 @@ namespace Ucu.Poo.TelegramBot
         /// <param name="next">El próximo "handler".</param>
         public OffersHandler(BaseHandler next) : base(next)
         {
-            this.Keywords = new string[] {"searchoffers"};
+            this.Keywords = new string[] { "offers" };
         }
 
         /// <summary>
@@ -26,16 +26,48 @@ namespace Ucu.Poo.TelegramBot
         protected override void InternalHandle(Message message, out string response)
         {
             var parameters = message.Text.Split(" ");
-            
-            Console.WriteLine(parameters);
-            
-            var list= OffersManager.Instance.getOffersCategories(parameters[1]);
-            var concString= "";
-            foreach(Offer offer in list)
+
+            var Parameter1 = parameters[1];
+            var Parameter2 = parameters[2];
+
+            if (Parameter1.ToLower() == "category")
             {
-                concString+= $"Name: {offer.employee.Name} | Description: {offer.Description} | Remuneration: {offer.Remuneration}\n" ;
+                response = caseCategories(Parameter2);
             }
-            response = concString;
+            else if (Parameter1.ToLower() == "reputation")
+            {
+                response = caseReputation();
+            }
+            else
+            {
+                response = "Parametros incorrectos, intente de nuevo";
+            }
+
+        }
+        public string caseCategories(string category)
+        {
+            var list = OffersManager.Instance.getOffersCategories(category);
+
+            var concString = "";
+            foreach (Offer offer in list)
+            {
+                concString += $"Name: {offer.employee.Name} | Description: {offer.Description} | Remuneration: {offer.Remuneration}\n";
+            }
+            return concString;
+        }
+        /*public string caseUbication(string ubication)
+        {
+
+        }*/
+        public string caseReputation()
+        {
+            var list = OffersManager.Instance.sortOffersByReputation();
+            var concString = "";
+            foreach (Offer offer in list)
+            {
+                concString += $"Name: {offer.employee.Name} | Description: {offer.Description} | Remuneration: {offer.Remuneration}\n";
+            }
+            return concString;
         }
     }
 }
