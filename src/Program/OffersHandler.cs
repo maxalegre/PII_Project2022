@@ -28,7 +28,6 @@ namespace Ucu.Poo.TelegramBot
         protected override void InternalHandle(Message message, out string response)
         {
             var parameters = message.Text.Split(" ");
-
             var Parameter1 = parameters[1];
             var Parameter2 = parameters[2];
 
@@ -70,6 +69,7 @@ namespace Ucu.Poo.TelegramBot
                 concString += $"Name: {offer.employee.Name} | Description: {offer.Description} | Remuneration: {offer.Remuneration}\n";
             }
             return concString;
+
         }
     }
 }
