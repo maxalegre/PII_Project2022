@@ -28,13 +28,13 @@ public sealed class QualificationManager
         }
         return average/list.Count;
     }
-    public void Qualification(IUser user, int rating, string comment, Contract contract)
+    public void Review(IUser user, int rating, string comment, Contract contract)
     {
         // User es el que esta haciendo la review.
         // El que sera calificado se encuentra dentro de contract.
         if (rating <= 5 && rating >= 1)
         {
-            if (user is Employee)
+            if (user is Employer)
             {
                 if (contract.employeeReviewed == false)
                 {
@@ -45,7 +45,7 @@ public sealed class QualificationManager
                 {
                     throw new QualificationException("Ya existe una review para el empleado");
                 }
-            if (user is Employer)
+            if (user is Employee)
             {
                 if (contract.employerReviewed == false)
                 {

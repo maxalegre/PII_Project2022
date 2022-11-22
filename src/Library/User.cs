@@ -79,6 +79,6 @@ public abstract class User : IUser
         int rating = input;
         System.Console.WriteLine("Ingrese el comentario (Opcional): ");
         string comment = Console.ReadLine();
-        QualificationManager.Instance.Qualification(this, rating, comment, Selected_Contract);
+        QualificationManager.Instance.Review(this, rating, comment, Selected_Contract);
     }
 }
