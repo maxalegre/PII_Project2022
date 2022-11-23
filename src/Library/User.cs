@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace Library;
 
-public abstract class User
+public abstract class User : IUser
 {
     public string Name;
     public string LastName;
@@ -14,8 +15,6 @@ public abstract class User
     public string contactNumber;
     public string contactEmail;
     public List<Qualification> Reviews = new List<Qualification>();
-    private List<Contract> Contract = new List<Contract>();
-
 
     public User(string name, string lastname, string id, string rol, string location, string contactnumber, string contactemail) {
         this.Name = name;
@@ -40,12 +39,49 @@ public abstract class User
         this.Reviews.Add(calificacion);
     }
     
+    public List<Contract> getContracts(IUser user)
+    {
+        return ContractManager.Instance.getContracts(this);
+    }
     public double getQualy()
     {
         return QualificationManager.Instance.getAverage(this.Reviews);
     }
-    public List<Contract> getContracts()
+    public void Qualify()
     {
-        return this.Contract;
+        List<Contract> contracts = ContractManager.Instance.getValidContracts(this);
+        ContractManager.Instance.PrintContracts(contracts);
+        System.Console.WriteLine("Seleccione el contrato en el que desea realizar la calificación: ");
+        int input;
+        while (true)
+        {   
+            input = int.Parse(Console.ReadLine())-1;
+            if (input > 0 && input < contracts.Count)
+            {
+                break;
+            }
+            else
+            {
+                System.Console.WriteLine("Fuera de rango.\n");
+            }
+        }
+        Contract Selected_Contract = contracts.ElementAt(input);
+        System.Console.WriteLine("Ingrese la calificación (del 1 a 5): ");
+        while (true)
+        {   
+            input = int.Parse(Console.ReadLine());
+            if (input >= 1 && input <= 5)
+            {
+                break;
+            }
+            else
+            {
+                System.Console.WriteLine("Fuera de rango.\n");
+            }
+        }
+        int rating = input;
+        System.Console.WriteLine("Ingrese el comentario (Opcional): ");
+        string comment = Console.ReadLine();
+        QualificationManager.Instance.Review(this, rating, comment, Selected_Contract);
     }
 }

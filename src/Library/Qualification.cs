@@ -2,13 +2,11 @@ namespace Library;
 
 public class Qualification
 {
-    public int Value;
-    public string Description;
-    
-
-    public Qualification (int Qualification, string Description)
+    public int rating;
+    public string comment;
+    public Qualification(int rating, string comment)
     {
-        this.Value = Qualification;
-        this.Description = Description;
-    } 
+        this.rating = rating;
+        this.comment = comment;
     }
+}
