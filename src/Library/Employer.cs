@@ -70,8 +70,8 @@ public class Employer : User, IUser
             offer.employee.hired = true;
             
             ContractManager.Instance.createContracts("init date", "-", offer.Category, offer.employee, this);
-            
         }
+        
     }
 }
     
