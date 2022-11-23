@@ -1,9 +1,11 @@
+using System;
+
 namespace Library
 {
     public interface IContract
     {
-        void setInitDate(string newInitDate);
-        void setFinalDate(string newFinalDate);
+        void setInitDate(DateTime newInitDate);
+        void setFinalDate(DateTime newFinalDate);
         void setJobs(string newJob);
     }
 }

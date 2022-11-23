@@ -49,7 +49,7 @@ public abstract class User : IUser
     }
     public void Qualify()
     {
-        List<Contract> contracts = ContractManager.Instance.getValidContracts(this);
+        List<Contract> contracts = ContractManager.Instance.getFinishedContracts(this);
         ContractManager.Instance.PrintContracts(contracts);
         System.Console.WriteLine("Seleccione el contrato en el que desea realizar la calificación: ");
         int input;

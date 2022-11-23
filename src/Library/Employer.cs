@@ -63,14 +63,12 @@ public class Employer : User, IUser
         System.Console.WriteLine("Seleccione un empleado a contratar:");
 
         // Comparo lo que se ingresa por consola y si es igual al nombre del employee lo contrata
-        
         var offer = offers.ElementAt(int.Parse(System.Console.ReadLine())-1);
         {
             System.Console.WriteLine("{0} contratado", offer.Category);
             offer.employee.hired = true;
             
-            ContractManager.Instance.createContracts("init date", "-", offer.Category, offer.employee, this);
-            
+            ContractManager.Instance.createContracts(1, offer.Category, offer.employee, this);
         }
     }
 }

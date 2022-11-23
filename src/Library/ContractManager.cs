@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -24,24 +25,30 @@ public sealed class ContractManager
     }
     public List<Contract> contracts = new List<Contract>();
     private ContractManager(){}
-    public void createContracts(string initDate, string finalDate, string jobs, Employee employee, Employer employer)
-    {
 
-        if (string.IsNullOrEmpty(initDate))
-        {
-            throw new ContractException ("Fecha inicial no válida");
-        }
-        else if (string.IsNullOrEmpty(finalDate))
-        {
-            throw new ContractException ("Fecha final no válida");
-        }
-        else if (string.IsNullOrEmpty(jobs))
-        {
+    /// <summary>
+    /// This method creates a contract.
+    /// It starts now and ends after "duration" months
+    /// </summary>
+    /// <param name="duration">Duration of the contract in months.</param>
+    /// <param name="jobs">The job to be done.</param>
+    /// <param name="employee">The employee.</param>
+    /// <param name="employer">The employer.</param>
+    public void createContracts(int duration, string jobs, Employee employee, Employer employer)
+    {
+ 
+       if (duration < 0)
+       {
+            throw new ContractException ("Duración no válida");
+       }
+       else if (string.IsNullOrEmpty(jobs))
+       {
             throw new ContractException ("Trabajo no válido");
-        }
-                
-        Contract contract = new Contract (initDate, finalDate, jobs, employer, employee);
+       }
+              
+        Contract contract = new Contract (System.DateTime.Now, System.DateTime.Now.AddMonths(duration), jobs, employer, employee);
         this.contracts.Add(contract);
+
     }
     public List<Contract> getContracts(IUser user)
     {
@@ -55,12 +62,12 @@ public sealed class ContractManager
         }
         return list;
     }
-    public List<Contract> getValidContracts(IUser user)
+    public List<Contract> getFinishedContracts(IUser user)
     {
         List<Contract> list = new List<Contract>();
         foreach (Contract item in this.contracts)
         {
-            if (item.IsValid == true)
+            if (item.Finished == true)
             {    
                 if (item.employer == ((Employer)user) || item.employee == ((Employee)user) )
                 {
