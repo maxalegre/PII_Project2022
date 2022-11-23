@@ -21,6 +21,8 @@ namespace Library
             this.initDate = initDate;
             this.finalDate = finalDate;
             this.jobs = jobs;
+            this.employee = employee;
+            this.employer = employer;
 
             var timeout = new TimeOutContract();
             timeout.contract = this;
