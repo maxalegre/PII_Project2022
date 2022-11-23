@@ -6,7 +6,7 @@ using Library;
 
 
     [TestFixture]
-    public class UserTests
+    public class UserManagerTests
     {
         [SetUp]
         public void Setup()

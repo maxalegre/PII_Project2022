@@ -53,25 +53,45 @@ public sealed class ContractManager
     public List<Contract> getContracts(IUser user)
     {
         List<Contract> list = new List<Contract>();
-        foreach (Contract item in this.contracts)
+        foreach (Contract contract in this.contracts)
         {
-            if (item.employer == ((Employer)user) || item.employee == ((Employee)user) )
-                {
-                    list.Add(item);
-                }
+            if (user is Employer)
+            {
+                if (contract.employer == ((Employer)user))
+                    {
+                        list.Add(contract);
+                    }
+            }
+            else if (user is Employee)
+            {
+                if (contract.employee == ((Employee)user))
+                    {
+                        list.Add(contract);
+                    }
+            }
         }
         return list;
     }
     public List<Contract> getFinishedContracts(IUser user)
     {
         List<Contract> list = new List<Contract>();
-        foreach (Contract item in this.contracts)
+        foreach (Contract contract in this.contracts)
         {
-            if (item.Finished == true)
+            if (contract.Finished == true)
             {    
-                if (item.employer == ((Employer)user) || item.employee == ((Employee)user) )
+                if (user is Employer)
                 {
-                    list.Add(item);
+                    if (contract.employer == ((Employer)user))
+                        {
+                            list.Add(contract);
+                        }
+                }
+                else if (user is Employee)
+                {
+                    if (contract.employee == ((Employee)user))
+                        {
+                            list.Add(contract);
+                        }
                 }
             }
         }

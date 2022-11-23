@@ -39,7 +39,7 @@ public abstract class User : IUser
         this.Reviews.Add(calificacion);
     }
     
-    public List<Contract> getContracts(IUser user)
+    public List<Contract> getContracts()
     {
         return ContractManager.Instance.getContracts(this);
     }
