@@ -64,11 +64,5 @@ namespace Library
                 timer.Register(60000,timeout);
             }
         }
-        /* Para el timer
-        public void toTimer (Employee employee, Employer employer)
-        {
-            this.employee = employee;
-            this.employer = employer;
-        }*/
     }
 }

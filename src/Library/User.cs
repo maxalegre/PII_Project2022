@@ -39,11 +39,14 @@ public abstract class User : IUser
         this.Reviews.Add(calificacion);
     }
     
+    public List<Contract> getContracts(IUser user)
+    {
+        return ContractManager.Instance.getContracts(this);
+    }
     public double getQualy()
     {
         return QualificationManager.Instance.getAverage(this.Reviews);
     }
-    public abstract List<Contract> getContracts();
     public void Qualify()
     {
         List<Contract> contracts = ContractManager.Instance.getValidContracts(this);

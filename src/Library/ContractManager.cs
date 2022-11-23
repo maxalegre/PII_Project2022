@@ -1,13 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Library
+namespace Library;
+
+/// <summary>
+/// Clase que se encarga de manejar los contratos. Se separan en employers y employees
+/// </summary>
+public sealed class ContractManager 
 {
-    /// <summary>
-    /// Clase que se encarga de manejar los contratos. Se separan en employers y employees
-    /// </summary>
-    public sealed class ContractManager 
-    {
     private static ContractManager instance;
 
     public static ContractManager Instance
@@ -26,48 +26,35 @@ namespace Library
     private ContractManager(){}
     public void createContracts(string initDate, string finalDate, string jobs, Employee employee, Employer employer)
     {
- 
-       if (string.IsNullOrEmpty(initDate))
-       {
+
+        if (string.IsNullOrEmpty(initDate))
+        {
             throw new ContractException ("Fecha inicial no válida");
-       }
-       else if (string.IsNullOrEmpty(finalDate))
-       {
+        }
+        else if (string.IsNullOrEmpty(finalDate))
+        {
             throw new ContractException ("Fecha final no válida");
-       }
-       else if (string.IsNullOrEmpty(jobs))
-       {
+        }
+        else if (string.IsNullOrEmpty(jobs))
+        {
             throw new ContractException ("Trabajo no válido");
-       }
-              
+        }
+                
         Contract contract = new Contract (initDate, finalDate, jobs, employer, employee);
         this.contracts.Add(contract);
     }
-    public List<Contract> getEmployeeContracts(Employee employee)
+    public List<Contract> getContracts(IUser user)
     {
-        List<Contract> employeeContractlist = new List<Contract>();
-        foreach (Contract contract in this.contracts)
+        List<Contract> list = new List<Contract>();
+        foreach (Contract item in this.contracts)
         {
-            if (contract.employee == employee)
-            {
-                employeeContractlist.Add(contract);
-            }
+            if (item.employer == ((Employer)user) || item.employee == ((Employee)user) )
+                {
+                    list.Add(item);
+                }
         }
-        return employeeContractlist;
+        return list;
     }
-    public List<Contract> getEmployerContracts(Employer employer)
-    {
-        List<Contract> employerContractlist = new List<Contract>();
-        foreach (Contract contract in this.contracts)
-        {
-            if (contract.employer == employer)
-            {
-                employerContractlist.Add(contract);
-            }
-        }
-        return employerContractlist;
-    }
-    
     public List<Contract> getValidContracts(IUser user)
     {
         List<Contract> list = new List<Contract>();
@@ -94,5 +81,4 @@ namespace Library
         }
     }
 
-    }
 }
