@@ -51,13 +51,20 @@ namespace Library
             //Offer expected = new Offer (employee,"Cocinero", 475.25, "Cocinero");
             employer.hireEmployee(OffersManager.Instance.Offers);
             var offer = 0;
+            
             //OffersManager.Instance.Offers.IndexOf(expected);
             //OffersManager.Instance.getOffersCategories("Cocinero").RemoveAt(OffersManager.Instance.Offers.IndexOf(expected));
             
             // No puedo comprobar el metodo por el readLine()
             OffersManager.Instance.Offers.RemoveAt(offer);
+            //employee.addOffer("Cocinero", 425.45, "Cocinero");
+            
+            // Me debería devolver passed porque se retiraria la oferta, pero por el readLine() no pasa el test 
             Assert.IsEmpty(OffersManager.Instance.Offers);
 
         }
+
+
+
     }
 }
