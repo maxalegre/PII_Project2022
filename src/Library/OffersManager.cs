@@ -93,6 +93,7 @@ namespace Library
             }
             return categoriesOffer;
         }
+       
         
     }}
         

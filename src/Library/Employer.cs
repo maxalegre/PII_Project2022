@@ -5,6 +5,12 @@ namespace Library;
 
 public class Employer : User, IUser
 {
+    new public string ID{get;}
+    new public string Name{get;set;}
+    new public string LastName{get;set;}
+    new public string Location{get;set;}
+    new public string contactNumber{get;set;}
+    new public string contactEmail{get;set;}
     public Employer (string name, string lastname, string id, string rol, string location, string contactnumber, string contactemail) 
     : base(name, lastname, id, rol, location, contactemail, contactnumber)
     {

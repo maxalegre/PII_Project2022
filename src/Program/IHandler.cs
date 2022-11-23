@@ -34,6 +34,6 @@ namespace Ucu.Poo.TelegramBot
         /// "handlers" que procesan varios mensajes cambiando de estado entre mensajes puedan volver al estado inicial en
         /// caso de error por ejemplo.
         /// </summary>
-        void Cancel();
+        void Cancel(Message message);
     }
 }

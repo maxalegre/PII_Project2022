@@ -1,6 +1,7 @@
 
 using System;
-
+using System.Threading.Tasks;
+using Ucu.Poo.Locations.Client;
 using Telegram.Bot.Types;
 using Library;
 namespace Ucu.Poo.TelegramBot
@@ -27,11 +28,13 @@ namespace Ucu.Poo.TelegramBot
         /// <returns>true si el mensaje fue procesado; false en caso contrario.</returns>
         protected override void InternalHandle(Message message, out string response)
         {
+            
+            
             var parameters = message.Text.Split(" ");
             var Parameter1 = parameters[1];
             var Parameter2 = parameters[2];
-
-            if (Parameter1.ToLower() == "category")
+        
+            if (parameters[1].ToLower() == "category")
             {
                 response = caseCategories(Parameter2);
             }
@@ -43,7 +46,7 @@ namespace Ucu.Poo.TelegramBot
             {
                 response = "Parametros incorrectos, intente de nuevo";
             }
-
+            
         }
         public string caseCategories(string category)
         {
@@ -56,8 +59,10 @@ namespace Ucu.Poo.TelegramBot
             }
             return concString;
         }
-        /*public string caseUbication(string ubication)
+        //En este momento no la utilizaremos
+        /*public string caseUbication(Employer employer)
         {
+           
 
         }*/
         public string caseReputation()
