@@ -20,7 +20,7 @@ namespace Ucu.Poo.TelegramBot
         public const string PARAMETROERROR = "Usuario no encontrado";
 
         private Dictionary<long, State> stateForUser = new Dictionary<long, State>();
-        private List <String> resultadosPreguntas = new List<string>();
+        private List <String> resultadosPreguntas= new List<string>();
 
         /// <summary>
         /// El estado del comando para un usuario que envía un mensaje. Cuando se comienza a procesar el comando para un
@@ -92,7 +92,7 @@ namespace Ucu.Poo.TelegramBot
             {
                 this.stateForUser.Add(message.From.Id, State.Start);
                 this.Data.Add(message.From.Id, new UserData());
-
+                
             }
 
             State state = this.StateForUser[message.From.Id];
@@ -109,7 +109,7 @@ namespace Ucu.Poo.TelegramBot
 
                 // En el estado AddressPrompt el mensaje recibido es la respuesta con la dirección
                 var dato = this.Data[message.From.Id].NombreApellido = message.Text.ToString();
-                if (dato!=null)
+                if (dato!=null & dato.Split(" ").Length==2)
                 {
                     this.resultadosPreguntas.Add(dato);
                     this.stateForUser[message.From.Id] = State.RolPregunta;
@@ -117,7 +117,7 @@ namespace Ucu.Poo.TelegramBot
                 }
                 else
                 {
-                    response = PARAMETROERROR;
+                    response = "Error. Ingrese nuevamente";
                 }
             }
             else if (state == State.RolPregunta)
@@ -133,7 +133,7 @@ namespace Ucu.Poo.TelegramBot
                     }
                     else
                     {
-                        response = PARAMETROERROR;
+                        response = "Rol no encontrado. Intente nuevamente";
                     }
                 }
             else if (state == State.LocationPregunta)
@@ -148,14 +148,14 @@ namespace Ucu.Poo.TelegramBot
                     }
                     else
                     {
-                        response = PARAMETROERROR;
+                        response = "Ubicacion no valida";
                     }
                 }
             else if (state == State.NumberPregunta)
                 {
                     var dato = this.Data[message.From.Id].PhoneNumber = message.Text.ToString();
 
-                    if(dato!=null)
+                    if(dato!=null )
                     {
                         this.resultadosPreguntas.Add(dato);
                         this.stateForUser[message.From.Id] = State.EmailPregunta;
@@ -163,7 +163,7 @@ namespace Ucu.Poo.TelegramBot
                     }
                     else
                     {
-                        response = PARAMETROERROR;
+                        response = "Numero no valido";
                     }
                 }
             else if (state == State.EmailPregunta)
@@ -174,7 +174,9 @@ namespace Ucu.Poo.TelegramBot
                     {
                         this.resultadosPreguntas.Add(dato);
                         this.stateForUser.Remove(message.From.Id); // Equivalente a volver al estado inicial
-                        
+                        UserManager.Instance.CreateUser(resultadosPreguntas[0].Split()[0],resultadosPreguntas[0].Split()[1]
+                        ,message.From.Id.ToString() ,resultadosPreguntas[1],resultadosPreguntas[2],resultadosPreguntas[3],resultadosPreguntas[4] );
+                        Console.WriteLine(message.From.Id.ToString());
                         response = "Se obtuvieron los datos correctamente";
                     }
                     else
