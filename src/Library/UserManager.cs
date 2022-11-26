@@ -19,7 +19,7 @@ public sealed class UserManager
             return instance;
         }
     }
-    public List<User> Users = new List<User>();
+    public List<IUser> Users = new List<IUser>();
     private UserManager(){}
 
     public void CreateUser(string name, string lastname, string id, string rol, string location, string contactnumber, string contactemail) {
