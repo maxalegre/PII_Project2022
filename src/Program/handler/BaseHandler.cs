@@ -57,7 +57,7 @@ namespace Ucu.Poo.TelegramBot
         /// Este método puede ser sobreescrito en las clases sucesores que procesan varios mensajes cambiando de estado
         /// entre mensajes deben sobreescribir este método para volver al estado inicial. En la clase base no hace nada.
         /// </summary>
-        protected virtual void InternalCancel()
+        protected virtual void InternalCancel(Message message)
         {
             // Intencionalmente en blanco.
         }
@@ -79,9 +79,10 @@ namespace Ucu.Poo.TelegramBot
                 throw new InvalidOperationException("No hay palabras clave que puedan ser procesadas");
             }
 
+
             return this.Keywords.Any(s => message.Text.Split(" ")[0].Equals(s, StringComparison.InvariantCultureIgnoreCase));
 
-          
+        
         }
 
         /// <summary>
@@ -113,12 +114,13 @@ namespace Ucu.Poo.TelegramBot
         /// procesan varios mensajes cambiando de estado entre mensajes deben sobreescribir este método para volver al
         /// estado inicial.
         /// </summary>
-        public virtual void Cancel()
+        public virtual void Cancel(Message message)
         {
-            this.InternalCancel();
+            this.InternalCancel(message);
             if (this.Next != null)
             {
-                this.Next.Cancel();
+                this.Next.Cancel(message);
+
             }
         }
     }

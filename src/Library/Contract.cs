@@ -16,6 +16,7 @@ namespace Library
         public bool employeeReviewed = false;
         public bool employerReviewed = false;
 
+
         public Contract(DateTime initDate, DateTime finalDate, string jobs, Employer employer, Employee employee)
         {
             this.initDate = initDate;

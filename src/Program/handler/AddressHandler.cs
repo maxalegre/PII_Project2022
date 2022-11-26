@@ -1,50 +1,47 @@
-
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-
 using Telegram.Bot.Types;
-using Library;
+
 namespace Ucu.Poo.TelegramBot
 {
     /// <summary>
-
     /// Un "handler" del patrón Chain of Responsibility que implementa el comando "dirección".
     /// </summary>
-    public class OffersHandler : BaseHandler
+    public class AddressHandler : BaseHandler
     {
-        public const string FILTRO = "¿Por cual caracteristica desea filtrar?";
+        public const string ADDRESS_PROMPT = "Vamos a buscar una dirección. Decime qué dirección querés buscar por favor";
         public const string INTERNAL_ERROR = "Error interno de configuración, no puedo buscar direcciones";
-        public const string USERNOTFOUND = "Usuario no encontrado";
+        public const string ADDRESS_NOT_FOUND = "No encuentro la dirección. Decime qué dirección querés buscar por favor";
 
-        private Dictionary<long, State> stateForUser = new Dictionary<long, State>();
+        private Dictionary<long, AddressState> stateForUser = new Dictionary<long, AddressState>();
 
         /// <summary>
         /// El estado del comando para un usuario que envía un mensaje. Cuando se comienza a procesar el comando para un
         /// nuevo usuario se agrega a este diccionario y cuando se termina de procesar el comando se remueve.
         /// </summary>
-        public IReadOnlyDictionary<long, State> StateForUser
+        public IReadOnlyDictionary<long, AddressState> StateForUser
         {
             get
             {
                 return this.stateForUser;
             }
         }
-        private Dictionary<long, UserData> Data = new Dictionary<long, UserData>();
 
         // Un buscador de direcciones. Permite que la forma de encontrar una dirección se determine en tiempo de
         // ejecución: en el código final se asigna un objeto que use una API para buscar direcciones; y en los casos de
         // prueba se asigne un objeto que retorne un resultado que puede ser configurado desde el caso de prueba.
+        private IAddressFinder finder;
 
         /// <summary>
         /// Inicializa una nueva instancia de la clase <see cref="AddressHandler"/>.
         /// </summary>
         /// <param name="next">Un buscador de direcciones.</param>
         /// <param name="next">El próximo "handler".</param>
-        public OffersHandler(BaseHandler next):base(next)
+        public AddressHandler(IAddressFinder finder, BaseHandler next)
+            : base(new string[] { "dirección", "direccion" }, next)
         {
-            this.Keywords = new string[] {"offers"};
-        
+            this.finder = finder;
         }
 
         /// <summary>
@@ -86,47 +83,50 @@ namespace Ucu.Poo.TelegramBot
             // comando es el estado inicial.
             if (!this.stateForUser.ContainsKey(message.From.Id))
             {
-                this.stateForUser.Add(message.From.Id, State.Start);
-                this.Data.Add(message.From.Id, new UserData());
-
+                this.stateForUser.Add(message.From.Id, AddressState.Start);
             }
 
-            State state = this.StateForUser[message.From.Id];
+            AddressState state = this.StateForUser[message.From.Id];
 
-            if (state == State.Start)
+            if (state == AddressState.Start)
             {
                 // En el estado Start le pide la dirección y pasa al estado AddressPrompt
-                this.stateForUser[message.From.Id] = State.Filtro;
-                response = FILTRO;
+                this.stateForUser[message.From.Id] = AddressState.AddressPrompt;
+                response = ADDRESS_PROMPT;
             }
-            else if (state == State.Filtro)
+            else if ((state == AddressState.AddressPrompt) && (this.finder != null))
             {
+                AddressData data = new AddressData();
 
                 // En el estado AddressPrompt el mensaje recibido es la respuesta con la dirección
-                var dato = this.Data[message.From.Id].Filter = message.Text.ToString();
-                if (dato!=null & dato.ToLower()=="category")
-                {                
-                    response= caseCategory(); 
-                    this.stateForUser.Remove(message.From.Id);
-                }
-                else if (dato!=null & dato.ToLower()=="reputation")
-                {                
-                    response= caseReputation(); 
-                    this.stateForUser.Remove(message.From.Id);
+                data.Address = message.Text;
+                data.Result = this.finder.GetLocation(data.Address);
+
+                if (data.Result.Found)
+                {
+                    // Si encuentra la dirección pasa nuevamente al estado Initial
+                    response = $"La dirección es en {data.Result.Latitude},{data.Result.Longitude}";
+                    this.stateForUser.Remove(message.From.Id); // Equivalente a volver al estado inicial
                 }
                 else
                 {
                     // Si no encuentra la dirección se la pide de nuevo y queda en el estado AddressPrompt
-                    response = USERNOTFOUND;
+                    response = ADDRESS_NOT_FOUND;
                 }
+            }
+            else if ((state == AddressState.AddressPrompt) && (this.finder == null))
+            {
+                // En el estado AddressPrompt si no hay un buscador de direcciones hay que responder que hubo un error
+                // y volver al estado inicial.
+                response = INTERNAL_ERROR;
+                this.stateForUser.Remove(message.From.Id); // Equivalente a volver al estado inicial
             }
             else
             {
-              response = string.Empty;
+                response = string.Empty;
             }
-            
         }
-        
+
         /// <summary>
         /// Retorna este "handler" al estado inicial.
         /// </summary>
@@ -145,56 +145,26 @@ namespace Ucu.Poo.TelegramBot
         /// - AddressPrompt: Luego de pedir la dirección. En este estado el comando obtiene las coordenadas de la
         /// dirección y vuelve al estado Start.
         /// </summary>
-        public enum State
+        public enum AddressState
         {
             Start,
-            Filtro
+            AddressPrompt
         }
 
         /// <summary>
         /// Representa los datos que va obteniendo el comando AddressHandler en los diferentes estados.
         /// </summary>
-        private class UserData
+        private class AddressData
         {
             /// <summary>
             /// La dirección que se ingresó en el estado AddressState.AddressPrompt.
             /// </summary>
-            public string UserID { get; set; }
-            public string Filter { get; set; }
-
+            public string Address { get; set; }
 
             /// <summary>
             /// El resultado de la búsqueda de la dirección ingresada.
             /// </summary>
-           // public IAddressResult Result { get; set; }
-
-
-        }
-        public string caseCategory(string category)
-        {
-            var list = OffersManager.Instance.getOffersCategories(category);
-
-            var concString = "";
-            foreach (Offer offer in list)
-            {
-                concString += $"Name: {offer.employee.Name} | Description: {offer.Description} | Remuneration: {offer.Remuneration}\n";
-            }
-            return concString;
-        }
-        /*public string caseUbication(string ubication)
-        {
-
-        }*/
-        public string caseReputation()
-        {
-            var list = OffersManager.Instance.sortOffersByReputation();
-            var concString = "";
-            foreach (Offer offer in list)
-            {
-                concString += $"Name: {offer.employee.Name} | Description: {offer.Description} | Remuneration: {offer.Remuneration}\n";
-            }
-            return concString;
-
+            public IAddressResult Result { get; set; }
         }
     }
 }

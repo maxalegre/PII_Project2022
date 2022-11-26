@@ -1,19 +1,16 @@
-
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-
 using Telegram.Bot.Types;
 using Library;
 namespace Ucu.Poo.TelegramBot
 {
     /// <summary>
-
     /// Un "handler" del patrón Chain of Responsibility que implementa el comando "dirección".
     /// </summary>
-    public class OffersHandler : BaseHandler
+    public class CreateContractHandler : BaseHandler
     {
-        public const string FILTRO = "¿Por cual caracteristica desea filtrar?";
+        public const string PRIMERAPREGUNTA = "¿A quien quieres contratar?";
         public const string INTERNAL_ERROR = "Error interno de configuración, no puedo buscar direcciones";
         public const string USERNOTFOUND = "Usuario no encontrado";
 
@@ -30,7 +27,6 @@ namespace Ucu.Poo.TelegramBot
                 return this.stateForUser;
             }
         }
-        private Dictionary<long, UserData> Data = new Dictionary<long, UserData>();
 
         // Un buscador de direcciones. Permite que la forma de encontrar una dirección se determine en tiempo de
         // ejecución: en el código final se asigna un objeto que use una API para buscar direcciones; y en los casos de
@@ -41,9 +37,9 @@ namespace Ucu.Poo.TelegramBot
         /// </summary>
         /// <param name="next">Un buscador de direcciones.</param>
         /// <param name="next">El próximo "handler".</param>
-        public OffersHandler(BaseHandler next):base(next)
+        public CreateContractHandler(BaseHandler next):base(next)
         {
-            this.Keywords = new string[] {"offers"};
+            this.Keywords = new string[] {"contract"};
         
         }
 
@@ -87,8 +83,6 @@ namespace Ucu.Poo.TelegramBot
             if (!this.stateForUser.ContainsKey(message.From.Id))
             {
                 this.stateForUser.Add(message.From.Id, State.Start);
-                this.Data.Add(message.From.Id, new UserData());
-
             }
 
             State state = this.StateForUser[message.From.Id];
@@ -96,23 +90,23 @@ namespace Ucu.Poo.TelegramBot
             if (state == State.Start)
             {
                 // En el estado Start le pide la dirección y pasa al estado AddressPrompt
-                this.stateForUser[message.From.Id] = State.Filtro;
-                response = FILTRO;
+                this.stateForUser[message.From.Id] = State.PrimeraPregunta;
+                response = PRIMERAPREGUNTA;
             }
-            else if (state == State.Filtro)
+            else if (state == State.PrimeraPregunta)
             {
+                AddressData data = new AddressData();
 
                 // En el estado AddressPrompt el mensaje recibido es la respuesta con la dirección
-                var dato = this.Data[message.From.Id].Filter = message.Text.ToString();
-                if (dato!=null & dato.ToLower()=="category")
-                {                
-                    response= caseCategory(); 
-                    this.stateForUser.Remove(message.From.Id);
-                }
-                else if (dato!=null & dato.ToLower()=="reputation")
-                {                
-                    response= caseReputation(); 
-                    this.stateForUser.Remove(message.From.Id);
+                data.UserID = message.Text.ToString(); 
+                var user =UserManager.Instance.Users.Find(i => i.ID == data.UserID);
+                if (user!=null)
+                {
+                    var me = UserManager.Instance.Users.Find(i => i.ID == message.From.Id.ToString());;
+                    //ContractManager.Instance.createContracts("Hola", "sdasd","Jardineria",user,me);
+                    // Si encuentra la dirección pasa nuevamente al estado Initial
+                    response = $"Usuario {user.Name} contratado";
+                    this.stateForUser.Remove(message.From.Id); // Equivalente a volver al estado inicial
                 }
                 else
                 {
@@ -120,13 +114,19 @@ namespace Ucu.Poo.TelegramBot
                     response = USERNOTFOUND;
                 }
             }
+            /*else if ((state == State.PrimeraPregunta) && (this.finder == null))
+            {
+                // En el estado AddressPrompt si no hay un buscador de direcciones hay que responder que hubo un error
+                // y volver al estado inicial.
+                response = INTERNAL_ERROR;
+                this.stateForUser.Remove(message.From.Id); // Equivalente a volver al estado inicial
+            }*/
             else
             {
-              response = string.Empty;
+                response = string.Empty;
             }
-            
         }
-        
+
         /// <summary>
         /// Retorna este "handler" al estado inicial.
         /// </summary>
@@ -148,53 +148,23 @@ namespace Ucu.Poo.TelegramBot
         public enum State
         {
             Start,
-            Filtro
+            PrimeraPregunta
         }
 
         /// <summary>
         /// Representa los datos que va obteniendo el comando AddressHandler en los diferentes estados.
         /// </summary>
-        private class UserData
+        private class AddressData
         {
             /// <summary>
             /// La dirección que se ingresó en el estado AddressState.AddressPrompt.
             /// </summary>
             public string UserID { get; set; }
-            public string Filter { get; set; }
-
 
             /// <summary>
             /// El resultado de la búsqueda de la dirección ingresada.
             /// </summary>
            // public IAddressResult Result { get; set; }
-
-
-        }
-        public string caseCategory(string category)
-        {
-            var list = OffersManager.Instance.getOffersCategories(category);
-
-            var concString = "";
-            foreach (Offer offer in list)
-            {
-                concString += $"Name: {offer.employee.Name} | Description: {offer.Description} | Remuneration: {offer.Remuneration}\n";
-            }
-            return concString;
-        }
-        /*public string caseUbication(string ubication)
-        {
-
-        }*/
-        public string caseReputation()
-        {
-            var list = OffersManager.Instance.sortOffersByReputation();
-            var concString = "";
-            foreach (Offer offer in list)
-            {
-                concString += $"Name: {offer.employee.Name} | Description: {offer.Description} | Remuneration: {offer.Remuneration}\n";
-            }
-            return concString;
-
         }
     }
 }

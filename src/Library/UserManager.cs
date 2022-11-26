@@ -19,7 +19,7 @@ public sealed class UserManager
             return instance;
         }
     }
-    public List<IUser> Users = new List<IUser>();
+    public List<User> Users = new List<User>();
     private UserManager(){}
 
     public void CreateUser(string name, string lastname, string id, string rol, string location, string contactnumber, string contactemail) {
@@ -39,11 +39,11 @@ public sealed class UserManager
 
     public IUser Login(string id)
     {
-        foreach (IUser item in this.Users)
+        foreach (IUser user in this.Users)
         {
-            if (CheckCredentials(item, id))
+            if (CheckCredentials(user, id))
             {
-                return item;
+                return user;
             }
         }
         return null;

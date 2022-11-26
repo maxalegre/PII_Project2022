@@ -46,6 +46,7 @@ public sealed class ContractManager
             throw new ContractException ("Trabajo no válido");
        }
               
+
         Contract contract = new Contract (System.DateTime.Now, System.DateTime.Now.AddMonths(duration), jobs, employer, employee);
         this.contracts.Add(contract);
 

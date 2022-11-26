@@ -1,23 +1,26 @@
-
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-
 using Telegram.Bot.Types;
 using Library;
 namespace Ucu.Poo.TelegramBot
 {
     /// <summary>
-
     /// Un "handler" del patrón Chain of Responsibility que implementa el comando "dirección".
     /// </summary>
-    public class OffersHandler : BaseHandler
+    public class RegisterUserHandler : BaseHandler
     {
-        public const string FILTRO = "¿Por cual caracteristica desea filtrar?";
+        public const string NOMBREAPELLIDO = "Ingrese el nombre y apellido";
+        public const string ROLPREGUNTA = "¿Es empleado o empleador?";
+        public const string LOCATIONPREGUNTA = "Ingrese su direccion (Calle y numero)";
+        public const string NUMBERPREGUNTA = "Ingrese numero de telefono";
+        public const string EMAILPREGUNTA = "Ingrese su email";
+
         public const string INTERNAL_ERROR = "Error interno de configuración, no puedo buscar direcciones";
-        public const string USERNOTFOUND = "Usuario no encontrado";
+        public const string PARAMETROERROR = "Usuario no encontrado";
 
         private Dictionary<long, State> stateForUser = new Dictionary<long, State>();
+        private List <String> resultadosPreguntas= new List<string>();
 
         /// <summary>
         /// El estado del comando para un usuario que envía un mensaje. Cuando se comienza a procesar el comando para un
@@ -32,6 +35,7 @@ namespace Ucu.Poo.TelegramBot
         }
         private Dictionary<long, UserData> Data = new Dictionary<long, UserData>();
 
+
         // Un buscador de direcciones. Permite que la forma de encontrar una dirección se determine en tiempo de
         // ejecución: en el código final se asigna un objeto que use una API para buscar direcciones; y en los casos de
         // prueba se asigne un objeto que retorne un resultado que puede ser configurado desde el caso de prueba.
@@ -41,9 +45,9 @@ namespace Ucu.Poo.TelegramBot
         /// </summary>
         /// <param name="next">Un buscador de direcciones.</param>
         /// <param name="next">El próximo "handler".</param>
-        public OffersHandler(BaseHandler next):base(next)
+        public RegisterUserHandler(BaseHandler next):base(next)
         {
-            this.Keywords = new string[] {"offers"};
+            this.Keywords = new string[] {"register"};
         
         }
 
@@ -88,7 +92,7 @@ namespace Ucu.Poo.TelegramBot
             {
                 this.stateForUser.Add(message.From.Id, State.Start);
                 this.Data.Add(message.From.Id, new UserData());
-
+                
             }
 
             State state = this.StateForUser[message.From.Id];
@@ -96,37 +100,104 @@ namespace Ucu.Poo.TelegramBot
             if (state == State.Start)
             {
                 // En el estado Start le pide la dirección y pasa al estado AddressPrompt
-                this.stateForUser[message.From.Id] = State.Filtro;
-                response = FILTRO;
+                this.stateForUser[message.From.Id] = State.NombreApellido;
+                response = NOMBREAPELLIDO;
             }
-            else if (state == State.Filtro)
+            else if (state == State.NombreApellido)
             {
+                //UserData data = new UserData();
 
                 // En el estado AddressPrompt el mensaje recibido es la respuesta con la dirección
-                var dato = this.Data[message.From.Id].Filter = message.Text.ToString();
-                if (dato!=null & dato.ToLower()=="category")
-                {                
-                    response= caseCategory(); 
-                    this.stateForUser.Remove(message.From.Id);
-                }
-                else if (dato!=null & dato.ToLower()=="reputation")
-                {                
-                    response= caseReputation(); 
-                    this.stateForUser.Remove(message.From.Id);
+                var dato = this.Data[message.From.Id].NombreApellido = message.Text.ToString();
+                if (dato!=null & dato.Split(" ").Length==2)
+                {
+                    this.resultadosPreguntas.Add(dato);
+                    this.stateForUser[message.From.Id] = State.RolPregunta;
+                    response = ROLPREGUNTA;
                 }
                 else
                 {
-                    // Si no encuentra la dirección se la pide de nuevo y queda en el estado AddressPrompt
-                    response = USERNOTFOUND;
+                    response = "Error. Ingrese nuevamente";
                 }
             }
+            else if (state == State.RolPregunta)
+                {
+
+                var dato = this.Data[message.From.Id].Rol = message.Text.ToString();
+
+                    if(dato!=null)
+                    {
+                        this.resultadosPreguntas.Add(dato);
+                        this.stateForUser[message.From.Id] = State.LocationPregunta;
+                        response = LOCATIONPREGUNTA;
+                    }
+                    else
+                    {
+                        response = "Rol no encontrado. Intente nuevamente";
+                    }
+                }
+            else if (state == State.LocationPregunta)
+                {
+                    var dato = this.Data[message.From.Id].Location = message.Text.ToString();
+
+                    if(dato!=null)
+                    {
+                        this.resultadosPreguntas.Add(dato);
+                        this.stateForUser[message.From.Id] = State.NumberPregunta;
+                        response = NUMBERPREGUNTA;
+                    }
+                    else
+                    {
+                        response = "Ubicacion no valida";
+                    }
+                }
+            else if (state == State.NumberPregunta)
+                {
+                    var dato = this.Data[message.From.Id].PhoneNumber = message.Text.ToString();
+
+                    if(dato!=null )
+                    {
+                        this.resultadosPreguntas.Add(dato);
+                        this.stateForUser[message.From.Id] = State.EmailPregunta;
+                        response = EMAILPREGUNTA;
+                    }
+                    else
+                    {
+                        response = "Numero no valido";
+                    }
+                }
+            else if (state == State.EmailPregunta)
+                {
+                    var dato = this.Data[message.From.Id].Email = message.Text.ToString();
+
+                    if(dato!=null)
+                    {
+                        this.resultadosPreguntas.Add(dato);
+                        this.stateForUser.Remove(message.From.Id); // Equivalente a volver al estado inicial
+                        UserManager.Instance.CreateUser(resultadosPreguntas[0].Split()[0],resultadosPreguntas[0].Split()[1]
+                        ,message.From.Id.ToString() ,resultadosPreguntas[1],resultadosPreguntas[2],resultadosPreguntas[3],resultadosPreguntas[4] );
+                        Console.WriteLine(message.From.Id.ToString());
+                        response = "Se obtuvieron los datos correctamente";
+                    }
+                    else
+                    {
+                        response = PARAMETROERROR;
+                    }
+                 }
+            
+            /*else if ((state == State.PrimeraPregunta) && (this.finder == null))
+            {
+                // En el estado AddressPrompt si no hay un buscador de direcciones hay que responder que hubo un error
+                // y volver al estado inicial.
+                response = INTERNAL_ERROR;
+                this.stateForUser.Remove(message.From.Id); // Equivalente a volver al estado inicial
+            }*/
             else
             {
-              response = string.Empty;
+                response = string.Empty;
             }
-            
         }
-        
+
         /// <summary>
         /// Retorna este "handler" al estado inicial.
         /// </summary>
@@ -148,7 +219,11 @@ namespace Ucu.Poo.TelegramBot
         public enum State
         {
             Start,
-            Filtro
+            NombreApellido,
+            RolPregunta,
+            LocationPregunta,
+            NumberPregunta,
+            EmailPregunta
         }
 
         /// <summary>
@@ -156,45 +231,20 @@ namespace Ucu.Poo.TelegramBot
         /// </summary>
         private class UserData
         {
-            /// <summary>
-            /// La dirección que se ingresó en el estado AddressState.AddressPrompt.
-            /// </summary>
-            public string UserID { get; set; }
-            public string Filter { get; set; }
+            
+            public string NombreApellido { get; set; }
+            public string Rol { get; set; }
+            public string Location { get; set; }
+            public string PhoneNumber { get; set; }
+            public string ID { get; set; }
+            public string Email { get; set; }
+
 
 
             /// <summary>
             /// El resultado de la búsqueda de la dirección ingresada.
             /// </summary>
            // public IAddressResult Result { get; set; }
-
-
-        }
-        public string caseCategory(string category)
-        {
-            var list = OffersManager.Instance.getOffersCategories(category);
-
-            var concString = "";
-            foreach (Offer offer in list)
-            {
-                concString += $"Name: {offer.employee.Name} | Description: {offer.Description} | Remuneration: {offer.Remuneration}\n";
-            }
-            return concString;
-        }
-        /*public string caseUbication(string ubication)
-        {
-
-        }*/
-        public string caseReputation()
-        {
-            var list = OffersManager.Instance.sortOffersByReputation();
-            var concString = "";
-            foreach (Offer offer in list)
-            {
-                concString += $"Name: {offer.employee.Name} | Description: {offer.Description} | Remuneration: {offer.Remuneration}\n";
-            }
-            return concString;
-
         }
     }
 }
