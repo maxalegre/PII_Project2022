@@ -25,11 +25,11 @@ public sealed class UserManager
     public void CreateUser(string name, string lastname, string id, string rol, string location, string contactnumber, string contactemail) {
         if (string.Equals(rol.ToLower(), "employer"))
         {
-            Users.Add(new Employer(name, lastname, id, rol, location, contactnumber, contactemail));
+            Users.Add(new Employer(name, lastname, id, location, contactnumber, contactemail));
         } 
         else if (string.Equals(rol.ToLower(), "employee"))
         {
-            Users.Add(new Employee(name, lastname, id, rol, location, contactnumber, contactemail));      
+            Users.Add(new Employee(name, lastname, id, location, contactnumber, contactemail));      
         }
         else
         {
