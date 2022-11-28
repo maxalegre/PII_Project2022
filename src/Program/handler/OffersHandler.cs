@@ -14,8 +14,8 @@ namespace Ucu.Poo.TelegramBot
     public class OffersHandler : BaseHandler
     {
         public const string PRIMERAPREGUNTA = "Agregar oferta: Ingrese 0\nFiltrar ofertas: Ingrese 1";
-        public const string FILTRO = "¿Por cual caracteristica desea filtrar?";
-        public const string CATEGORIAPREGUNTA = "¿Por cual caracteristica desea filtrar?";
+        public const string FILTRO = "¿Como desea filtrar?\n-Category\n-Reputation\n-Location";
+        public const string CATEGORIAPREGUNTA = "¿Por cual categoría desea filtrar?";
 
         public const string DESCRIPCIONOFERTA = "Agregue una descripcion a la oferta";
         public const string REMUNERACIONOFERTA = "Agregue una remuneracion a la oferta";
@@ -110,12 +110,12 @@ namespace Ucu.Poo.TelegramBot
                 if(this.Data[message.From.Id].PrimeraPregunta== "0" & UserManager.Instance.Users.Find(i => i.ID == message.From.Id.ToString()) is Employer )
                 {
                     this.Data[message.From.Id].UserEmployer= UserManager.Instance.Users.Find(i => i.ID == message.From.Id.ToString());
-                    response= FILTRO;
+                    response= DESCRIPCIONOFERTA;
                     this.stateForUser[message.From.Id] = State.Filtro;
                 }
                 else if(this.Data[message.From.Id].PrimeraPregunta== "1" & UserManager.Instance.Users.Find(i => i.ID == message.From.Id.ToString()) is Employee )
                 {
-                    response= DESCRIPCIONOFERTA;
+                    response= FILTRO;
                     this.stateForUser[message.From.Id] = State.DescripcionOferta;
                 }
                 else
