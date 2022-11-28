@@ -107,13 +107,13 @@ namespace Ucu.Poo.TelegramBot
             else if(state== State.PrimeraPregunta)
             {
                 this.Data[message.From.Id].PrimeraPregunta= message.Text.ToString();
-                if(this.Data[message.From.Id].PrimeraPregunta== "0" & UserManager.Instance.Users.Find(i => i.ID == message.From.Id.ToString()) is Employer )
+                if(this.Data[message.From.Id].PrimeraPregunta== "0" & UserManager.Instance.Users.Find(i => i.ID == message.From.Id.ToString()) is Employee )
                 {
                     this.Data[message.From.Id].UserEmployer= UserManager.Instance.Users.Find(i => i.ID == message.From.Id.ToString());
                     response= DESCRIPCIONOFERTA;
                     this.stateForUser[message.From.Id] = State.DescripcionOferta;
                 }
-                else if(this.Data[message.From.Id].PrimeraPregunta== "1" & UserManager.Instance.Users.Find(i => i.ID == message.From.Id.ToString()) is Employee )
+                else if(this.Data[message.From.Id].PrimeraPregunta== "1" & UserManager.Instance.Users.Find(i => i.ID == message.From.Id.ToString()) is Employer )
                 {
                     response= FILTRO;
                     this.stateForUser[message.From.Id] = State.Filtro;
