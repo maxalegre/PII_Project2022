@@ -247,7 +247,7 @@ namespace Ucu.Poo.TelegramBot
             var concString = "";
             foreach (Offer offer in list)
             {
-                concString += $"Name: {offer.employee.Name} | Description: {offer.Description} | Remuneration: {offer.Remuneration}\n";
+                concString += $"Name: {offer.employee.Name} | ID: {offer.employee.ID} | Remuneration: {offer.Remuneration}\n";
             }
             return concString;
         }
@@ -262,7 +262,7 @@ namespace Ucu.Poo.TelegramBot
                 distance= calculador.CalculateDistance(this.Data[int.Parse(id)].UserEmployer.Location, offer.employee.Location);
                 if (distance.Time<= 90)
                 {
-                    sortedOffers+= $"Name: {offer.employee.Name} | Description: {offer.Description} | Remuneration: {offer.Remuneration}\n";
+                    sortedOffers+= $"Name: {offer.employee.Name} | ID: {offer.employee.ID} | Category: {offer.Category}\n";
                 }
             }
             return sortedOffers;                      
@@ -273,7 +273,7 @@ namespace Ucu.Poo.TelegramBot
             var concString = "";
             foreach (Offer offer in list)
             {
-                concString += $"Name: {offer.employee.Name} | Description: {offer.Description} | Remuneration: {offer.Remuneration}\n";
+                concString += $"Name: {offer.employee.Name} | ID: {offer.employee.ID} | Category: {offer.Category}\n";
             }
             return concString;
 
