@@ -30,11 +30,8 @@ public sealed class CategoriesManager {
         }
     }
 
-    public void getCategories() {
-        foreach (Category item in this.categories)
-        {
-            System.Console.WriteLine(item.Name);
-        }
+    public List<Category> getCategories() {
+        return this.categories;
     }
 
     /*public void Populate() {

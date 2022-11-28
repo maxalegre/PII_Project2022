@@ -108,7 +108,7 @@ namespace Ucu.Poo.TelegramBot
             {
 
                 // En el estado AddressPrompt el mensaje recibido es la respuesta con la dirección
-                if (message.Text.ToString()!=null & message.Text.ToString().Split(" ").Length==2)
+                if (message.Text.ToString()!=null & message.Text.ToString().Split(" ").Length>=2)
                 {
                     this.Data[message.From.Id].NombreApellido = message.Text.ToString();
                     this.stateForUser[message.From.Id] = State.RolPregunta;
@@ -121,9 +121,16 @@ namespace Ucu.Poo.TelegramBot
             }
             else if (state == State.RolPregunta)
                 {
-                    if(message.Text.ToString()!=null & (message.Text.ToString().ToLower()== "employee" | message.Text.ToString().ToLower()== "employer"))
+                    if(message.Text.ToString()!=null & (message.Text.ToString().ToLower()== "empleado" | message.Text.ToString().ToLower()== "empleador"))
                     {
-                        this.Data[message.From.Id].Rol = message.Text.ToString();
+                        if (message.Text.ToString() == "empleado")
+                        {
+                            this.Data[message.From.Id].Rol = "employee";
+                        } 
+                        else 
+                        {
+                            this.Data[message.From.Id].Rol = "employer";
+                        }
                         this.stateForUser[message.From.Id] = State.LocationPregunta;
                         response = LOCATIONPREGUNTA;
                     }
@@ -134,7 +141,7 @@ namespace Ucu.Poo.TelegramBot
                 }
             else if (state == State.LocationPregunta)
                 {
-                    if(message.Text.ToString()!=null & message.Text.ToString().Split(" ").Length==2)
+                    if(message.Text.ToString()!=null)
                     {
                         LocationApiClient client = new LocationApiClient();
                         AddressFinder address= new AddressFinder(client);
