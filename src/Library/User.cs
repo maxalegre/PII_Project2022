@@ -45,7 +45,7 @@ public abstract class User : IUser
     {
         return QualificationManager.Instance.getAverage(this.Reviews);
     }
-    public void Qualify()
+    /*public void Qualify()
     {
         List<Contract> contracts = ContractManager.Instance.getFinishedContracts(this);
         ContractManager.Instance.PrintContracts(contracts);
@@ -81,5 +81,5 @@ public abstract class User : IUser
         System.Console.WriteLine("Ingrese el comentario (Opcional): ");
         string comment = Console.ReadLine();
         QualificationManager.Instance.Review(this, rating, comment, Selected_Contract);
-    }
+    }*/
 }

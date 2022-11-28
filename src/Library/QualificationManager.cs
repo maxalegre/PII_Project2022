@@ -45,17 +45,17 @@ public sealed class QualificationManager
                 {
                     throw new QualificationException("Ya existe una review para el empleado");
                 }
-                if (user is Employee)
+            }
+            if (user is Employee)
+            {
+                if (contract.employerReviewed == false)
                 {
-                    if (contract.employerReviewed == false)
-                    {
-                        contract.employerReviewed = true;
-                        contract.employer.AddQualification(new Qualification(rating, comment));
-                    }
-                    else
-                    {
-                        throw new QualificationException("Ya existe una review para el empleador");
-                    }
+                    contract.employerReviewed = true;
+                    contract.employer.AddQualification(new Qualification(rating, comment));
+                }
+                else
+                {
+                    throw new QualificationException("Ya existe una review para el empleador");
                 }
             }
         }
