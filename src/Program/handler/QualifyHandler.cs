@@ -11,7 +11,7 @@ namespace Ucu.Poo.TelegramBot
     public class QualifyHandler : BaseHandler
     {
         public const string PREGUNTAID = "Ingrese el ID del usuario";
-        public const string PREGUNTARATING = "Ingrese el rating numerico";
+        public const string PREGUNTARATING = "Ingrese el rating numerico (de 1 a 5)";
         public const string PREGUNTACOMMENT = "Ingrese algun comentario adicional";
         public const string INTERNAL_ERROR = "Error interno de configuración, no puedo buscar direcciones";
         public const string PARAMETROERROR = "Usuario no encontrado";
@@ -117,9 +117,24 @@ namespace Ucu.Poo.TelegramBot
             }
             else if (state == State.PreguntaRating)
             {
-                this.Data[message.From.Id].Rating = int.Parse(message.Text.ToString());
-                this.stateForUser[message.From.Id] = State.PreguntaComment;
-                response =PREGUNTACOMMENT ;
+                int result;
+                if (int.TryParse(message.Text.ToString(), out result))
+                {
+                    if (result >= 1 && result <= 5)
+                    {
+                        this.Data[message.From.Id].Rating = result;
+                        this.stateForUser[message.From.Id] = State.PreguntaComment;
+                        response =PREGUNTACOMMENT;
+                    }
+                    else
+                    {
+                        response = "El rating ingresado no es correcto.";
+                    }
+                }
+                else 
+                {
+                    response = "El rating ingresado no es correcto.";
+                }
             }
             else if (state == State.PreguntaComment)
             {
