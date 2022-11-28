@@ -10,7 +10,9 @@ namespace Ucu.Poo.TelegramBot
     /// </summary>
     public class CreateContractHandler : BaseHandler
     {
-        public const string PRIMERAPREGUNTA = "¿A quien quieres contratar?";
+        public const string PRIMERAPREGUNTA = "Ingrese el ID del empleado a contratar";
+        public const string DURACIONPREGUNTA = "Ingrese la duracion del contrato en meses";
+
         public const string INTERNAL_ERROR = "Error interno de configuración, no puedo buscar direcciones";
         public const string USERNOTFOUND = "Usuario no encontrado";
 
@@ -29,7 +31,6 @@ namespace Ucu.Poo.TelegramBot
         }
         private Dictionary<long, UserData> Data = new Dictionary<long, UserData>();
 
-        private Dictionary<long, DistanceData> Data = new Dictionary<long, DistanceData>();
         // Un buscador de direcciones. Permite que la forma de encontrar una dirección se determine en tiempo de
         // ejecución: en el código final se asigna un objeto que use una API para buscar direcciones; y en los casos de
         // prueba se asigne un objeto que retorne un resultado que puede ser configurado desde el caso de prueba.
@@ -99,16 +100,12 @@ namespace Ucu.Poo.TelegramBot
             }
             else if (state == State.PrimeraPregunta)
             {
-                // En el estado AddressPrompt el mensaje recibido es la respuesta con la dirección
-                this.Data.UserID = message.Text.ToString(); 
-                var user =UserManager.Instance.Users.Find(i => i.ID == data.UserID);
-                if (user!=null)
+                if (UserManager.Instance.Users.Find(i => i.ID == message.Text.ToString())!=null)
                 {
-                    var me = UserManager.Instance.Users.Find(i => i.ID == message.From.Id.ToString());;
-                    ContractManager.Instance.createContracts("Hola", "sdasd","Jardineria",(Employee)user,(Employer)me);
-                    // Si encuentra la dirección pasa nuevamente al estado Initial
-                    response = $"Usuario {user.Name} contratado";
-                    this.stateForUser.Remove(message.From.Id); // Equivalente a volver al estado inicial
+                    this.Data[message.From.Id].UserID = message.Text.ToString();
+                    this.Data[message.From.Id].User = UserManager.Instance.Users.Find(i => i.ID == message.Text.ToString());
+                    
+                    response= DURACIONPREGUNTA;
                 }
                 else
                 {
@@ -116,13 +113,17 @@ namespace Ucu.Poo.TelegramBot
                     response = USERNOTFOUND;
                 }
             }
-            /*else if ((state == State.PrimeraPregunta) && (this.finder == null))
+            else if(state== State.DuracionPregunta)
             {
-                // En el estado AddressPrompt si no hay un buscador de direcciones hay que responder que hubo un error
-                // y volver al estado inicial.
-                response = INTERNAL_ERROR;
-                this.stateForUser.Remove(message.From.Id); // Equivalente a volver al estado inicial
-            }*/
+                this.Data[message.From.Id].Duration = int.Parse(message.Text.ToString());
+                var me = UserManager.Instance.Users.Find(i => i.ID == message.From.Id.ToString());;
+                ContractManager.Instance.createContracts( this.Data[message.From.Id].Duration,OffersManager.Instance.Offers.Find(i => i.employee == (Employee)this.Data[message.From.Id].User).Category ,(Employee)this.Data[message.From.Id].User,(Employer)me);
+                response = $"Usuario {this.Data[message.From.Id].User.Name} contratado";
+                this.stateForUser.Remove(message.From.Id);
+                this.Data.Remove(message.From.Id);
+
+            }
+            
             else
             {
                 response = string.Empty;
@@ -150,7 +151,8 @@ namespace Ucu.Poo.TelegramBot
         public enum State
         {
             Start,
-            PrimeraPregunta
+            PrimeraPregunta,
+            DuracionPregunta
         }
 
         /// <summary>
@@ -162,6 +164,9 @@ namespace Ucu.Poo.TelegramBot
             /// La dirección que se ingresó en el estado AddressState.AddressPrompt.
             /// </summary>
             public string UserID { get; set; }
+            public IUser User { get; set; }
+
+            public int Duration { get; set; }
 
             /// <summary>
             /// El resultado de la búsqueda de la dirección ingresada.

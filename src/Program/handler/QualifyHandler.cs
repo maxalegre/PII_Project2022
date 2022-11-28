@@ -8,7 +8,7 @@ namespace Ucu.Poo.TelegramBot
     /// <summary>
     /// Un "handler" del patrón Chain of Responsibility que implementa el comando "dirección".
     /// </summary>
-    public class RegisterUserHandler : BaseHandler
+    public class QualifyHandler : BaseHandler
     {
         public const string PREGUNTAID = "Ingrese el ID del usuario";
         public const string PREGUNTARATING = "Ingrese el rating numerico";
@@ -42,7 +42,7 @@ namespace Ucu.Poo.TelegramBot
         /// </summary>
         /// <param name="next">Un buscador de direcciones.</param>
         /// <param name="next">El próximo "handler".</param>
-        public RegisterUserHandler(BaseHandler next):base(next)
+        public QualifyHandler(BaseHandler next):base(next)
         {
             this.Keywords = new string[] {"register"};
         
@@ -97,18 +97,18 @@ namespace Ucu.Poo.TelegramBot
             if (state == State.Start)
             {
                 // En el estado Start le pide la dirección y pasa al estado AddressPrompt
-                this.stateForUser[message.From.Id] = State.NombreApellido;
+                this.stateForUser[message.From.Id] = State.PreguntaId;
                 response = PREGUNTAID;
             }
             else if (state == State.PreguntaId)
             {
                 this.Data[message.From.Id].UserId = message.Text.ToString();
-                var user= UserManager.Instance.Users.Find(i => i.ID == this.Data.UserId);
+                var user= UserManager.Instance.Users.Find(i => i.ID == this.Data[message.From.Id].UserId);
                 if(user!=null)
                 {
                     this.Data[message.From.Id].User = user;
                     this.stateForUser[message.From.Id] = State.PreguntaRating;
-                    response = PREGUNTARATING
+                    response = PREGUNTARATING;
                 }
                 else
                 {
@@ -117,20 +117,21 @@ namespace Ucu.Poo.TelegramBot
             }
             else if (state == State.PreguntaRating)
             {
-                this.Data[message.From.Id].Rating = message.Text.ToString();
+                this.Data[message.From.Id].Rating = int.Parse(message.Text.ToString());
                 this.stateForUser[message.From.Id] = State.PreguntaComment;
                 response =PREGUNTACOMMENT ;
             }
             else if (state == State.PreguntaComment)
             {
+                Contract contract;
                 this.Data[message.From.Id].Comment = message.Text.ToString();
                 if(this.Data[message.From.Id].User is Employer)
                 {
-                    var contract= ContractManager.Instance.contracts.Find(i => i.employee.ID == message.From.Id.ToString() & i.employer.ID = this.Data.UserId);
+                    contract= ContractManager.Instance.contracts.Find(i => i.employee.ID == message.From.Id.ToString() & i.employer.ID ==this.Data[message.From.Id].UserId);
                 }
                 else
                 {
-                    var contract= ContractManager.Instance.contracts.Find(i => i.employee.ID == this.Data.UserId & i.employer = message.From.Id.ToString());
+                    contract= ContractManager.Instance.contracts.Find(i => i.employee.ID == this.Data[message.From.Id].UserId & i.employer.ID == message.From.Id.ToString());
                 }
                 if(contract!= null)
                 {
@@ -141,7 +142,7 @@ namespace Ucu.Poo.TelegramBot
                 }
                 else
                 {
-                    response = "No hay ningun contrato finalizado con estos usuarios"
+                    response = "No hay ningun contrato finalizado con estos usuarios";
                     this.stateForUser.Remove(message.From.Id);
                     this.Data.Remove(message.From.Id);
                 }
@@ -186,7 +187,7 @@ namespace Ucu.Poo.TelegramBot
             
             public string UserId { get; set; }
             public IUser User { get; set; }
-            public string Rating { get; set; }
+            public int Rating { get; set; }
             public string Comment { get; set; }
             
             /// <summary>

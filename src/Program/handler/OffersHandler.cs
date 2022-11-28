@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-
+using Ucu.Poo.Locations.Client;
 using Telegram.Bot.Types;
 using Library;
 namespace Ucu.Poo.TelegramBot
@@ -15,6 +15,8 @@ namespace Ucu.Poo.TelegramBot
     {
         public const string PRIMERAPREGUNTA = "Agregar oferta: Ingrese 0\nFiltrar ofertas: Ingrese 1";
         public const string FILTRO = "¿Por cual caracteristica desea filtrar?";
+        public const string CATEGORIAPREGUNTA = "¿Por cual caracteristica desea filtrar?";
+
         public const string DESCRIPCIONOFERTA = "Agregue una descripcion a la oferta";
         public const string REMUNERACIONOFERTA = "Agregue una remuneracion a la oferta";
         public const string CATEGORIAOFERTA = "Agregue una categoria a la cual ubicar la oferta";
@@ -107,6 +109,7 @@ namespace Ucu.Poo.TelegramBot
                 this.Data[message.From.Id].PrimeraPregunta= message.Text.ToString();
                 if(this.Data[message.From.Id].PrimeraPregunta== "0" & UserManager.Instance.Users.Find(i => i.ID == message.From.Id.ToString()) is Employer )
                 {
+                    this.Data[message.From.Id].UserEmployer= UserManager.Instance.Users.Find(i => i.ID == message.From.Id.ToString());
                     response= FILTRO;
                     this.stateForUser[message.From.Id] = State.Filtro;
                 }
@@ -117,7 +120,7 @@ namespace Ucu.Poo.TelegramBot
                 }
                 else
                 {
-                    response= "La accion no se pudo realizar. Intente nuevamente"
+                    response= "La accion no se pudo realizar. Intente nuevamente";
                 }
             }
             else if (state == State.Filtro)
@@ -127,10 +130,9 @@ namespace Ucu.Poo.TelegramBot
                 var dato = this.Data[message.From.Id].Filter = message.Text.ToString();
                 if (dato!=null & dato.ToLower()=="category")
                 {                
-                    response= caseCategory(); 
-                    this.stateForUser.Remove(message.From.Id);
-                    this.Data.Remove(message.From.Id);
-
+                    response= CATEGORIAPREGUNTA; 
+                    this.stateForUser[message.From.Id]= State.Categoria;
+                    
                 }
                 else if (dato!=null & dato.ToLower()=="reputation")
                 {                
@@ -141,7 +143,7 @@ namespace Ucu.Poo.TelegramBot
                 }
                 else if(dato!=null & dato.ToLower()=="ubication")
                 {
-                    response= caseUbication(); 
+                    response= caseUbication(this.Data[message.From.Id].UserEmployer.Location,message.From.Id.ToString()); 
                     this.stateForUser.Remove(message.From.Id);
                     this.Data.Remove(message.From.Id);
                 }
@@ -150,6 +152,12 @@ namespace Ucu.Poo.TelegramBot
                     // Si no encuentra la dirección se la pide de nuevo y queda en el estado AddressPrompt
                     response = "Modo de filtrado incorrecto. Intente de nuevo";
                 }
+            }
+            else if(state == State.Categoria)
+            {
+                response = caseCategory(message.Text.ToString());
+                this.stateForUser.Remove(message.From.Id);
+                this.Data.Remove(message.From.Id);
             }
             else if(state== State.DescripcionOferta)
             {
@@ -201,6 +209,7 @@ namespace Ucu.Poo.TelegramBot
             Start,
             PrimeraPregunta,
             Filtro,
+            Categoria,
             DescripcionOferta,
             RemuneracionOferta,
             CategoriaOferta,
@@ -215,7 +224,9 @@ namespace Ucu.Poo.TelegramBot
             /// <summary>
             /// La dirección que se ingresó en el estado AddressState.AddressPrompt.
             /// </summary>
+            public string PrimeraPregunta { get; set; }
             public string UserID { get; set; }
+            public IUser UserEmployer { get; set; }
             public string Filter { get; set; }
             public string OfferDescription { get; set; }
             public double OfferRemuneration { get; set; }
@@ -240,9 +251,21 @@ namespace Ucu.Poo.TelegramBot
             }
             return concString;
         }
-        public string caseUbication(string ubication)
+        public string caseUbication(string ubication, string id)
         {
-             var list= OffersManager.Instance.                      
+            LocationApiClient client = new LocationApiClient();
+            DistanceCalculator calculador = new DistanceCalculator(client);
+            IDistanceResult distance;
+            var sortedOffers = "";
+            foreach(Offer offer in OffersManager.Instance.Offers)
+            {
+                distance= calculador.CalculateDistance(this.Data[int.Parse(id)].UserEmployer.Location, offer.employee.Location);
+                if (distance.Time<= 90)
+                {
+                    sortedOffers+= $"Name: {offer.employee.Name} | Description: {offer.Description} | Remuneration: {offer.Remuneration}\n";
+                }
+            }
+            return sortedOffers;                      
         }
         public string caseReputation()
         {

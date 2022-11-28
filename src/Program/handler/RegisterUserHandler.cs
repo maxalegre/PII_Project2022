@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Telegram.Bot.Types;
+using Ucu.Poo.Locations.Client;
 using Library;
 namespace Ucu.Poo.TelegramBot
 {
@@ -120,7 +121,7 @@ namespace Ucu.Poo.TelegramBot
             }
             else if (state == State.RolPregunta)
                 {
-                    if(message.Text.ToString()!=null & (message.Text.ToString().ToLower== "employee" | message.Text.ToString().ToLower== "employer"  ))
+                    if(message.Text.ToString()!=null & (message.Text.ToString().ToLower()== "employee" | message.Text.ToString().ToLower()== "employer"))
                     {
                         this.Data[message.From.Id].Rol = message.Text.ToString();
                         this.stateForUser[message.From.Id] = State.LocationPregunta;
@@ -135,8 +136,9 @@ namespace Ucu.Poo.TelegramBot
                 {
                     if(message.Text.ToString()!=null & message.Text.ToString().Split(" ").Length==2)
                     {
-                        AddressFinder address= new AddressFinder();
-                        if(address.GetLocation(message.Text.ToString())!= null);
+                        LocationApiClient client = new LocationApiClient();
+                        AddressFinder address= new AddressFinder(client);
+                        if(address.GetLocation(message.Text.ToString())!= null)
                         {
                             this.Data[message.From.Id].Location = message.Text.ToString();
                             this.stateForUser[message.From.Id] = State.NumberPregunta;
