@@ -18,7 +18,7 @@ namespace LibraryTests
             for (int i = 1; i < 5; i++)
             {
                 string category = $"{i}";
-                CategoriesManager.Instance.addCategory(category);
+                Admin.Instance.addCategory(category);
             }
             List<Category> list = CategoriesManager.Instance.getCategories();
             int counter = 1;
