@@ -111,12 +111,12 @@ namespace Ucu.Poo.TelegramBot
                 {
                     this.Data[message.From.Id].UserEmployer= UserManager.Instance.Users.Find(i => i.ID == message.From.Id.ToString());
                     response= DESCRIPCIONOFERTA;
-                    this.stateForUser[message.From.Id] = State.Filtro;
+                    this.stateForUser[message.From.Id] = State.DescripcionOferta;
                 }
                 else if(this.Data[message.From.Id].PrimeraPregunta== "1" & UserManager.Instance.Users.Find(i => i.ID == message.From.Id.ToString()) is Employee )
                 {
                     response= FILTRO;
-                    this.stateForUser[message.From.Id] = State.DescripcionOferta;
+                    this.stateForUser[message.From.Id] = State.Filtro;
                 }
                 else
                 {
