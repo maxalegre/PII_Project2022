@@ -141,9 +141,9 @@ namespace Ucu.Poo.TelegramBot
                     this.Data.Remove(message.From.Id);
 
                 }
-                else if(dato!=null & dato.ToLower()=="ubication")
+                else if(dato!=null & dato.ToLower()=="location")
                 {
-                    response= caseUbication(this.Data[message.From.Id].UserEmployer.Location,message.From.Id.ToString()); 
+                    response= caseLocation(this.Data[message.From.Id].UserEmployer.Location,message.From.Id.ToString()); 
                     this.stateForUser.Remove(message.From.Id);
                     this.Data.Remove(message.From.Id);
                 }
@@ -252,7 +252,7 @@ namespace Ucu.Poo.TelegramBot
             }
             return concString;
         }
-        public string caseUbication(string ubication, string id)
+        public string caseLocation(string ubication, string id)
         {
             LocationApiClient client = new LocationApiClient();
             DistanceCalculator calculador = new DistanceCalculator(client);
