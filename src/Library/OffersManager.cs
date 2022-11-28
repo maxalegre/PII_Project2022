@@ -1,6 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+
+using Telegram.Bot.Types;
+using Ucu.Poo.TelegramBot;
 namespace Library
 {
     public sealed class OffersManager
@@ -93,7 +98,12 @@ namespace Library
             }
             return categoriesOffer;
         }
-       
+        public List<Offer> getOffersByUbication(Employee empleado, Employer empleador)
+        {
+            //AddressFinder addressFinder= new AddressFinder();
+            DistanceCalculator calculador = new DistanceCalculator()
+            var distancia = calculador.CalculateDistance(empleado.Location, empleador.Location);
+        }
         
     }}
         

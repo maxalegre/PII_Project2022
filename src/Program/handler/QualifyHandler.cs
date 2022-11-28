@@ -10,12 +10,9 @@ namespace Ucu.Poo.TelegramBot
     /// </summary>
     public class RegisterUserHandler : BaseHandler
     {
-        public const string NOMBREAPELLIDO = "Ingrese el nombre y apellido";
-        public const string ROLPREGUNTA = "¿Es empleado o empleador?";
-        public const string LOCATIONPREGUNTA = "Ingrese su direccion (Calle y numero)";
-        public const string NUMBERPREGUNTA = "Ingrese numero de telefono";
-        public const string EMAILPREGUNTA = "Ingrese su email";
-
+        public const string PREGUNTAID = "Ingrese el ID del usuario";
+        public const string PREGUNTARATING = "Ingrese el rating numerico";
+        public const string PREGUNTACOMMENT = "Ingrese algun comentario adicional";
         public const string INTERNAL_ERROR = "Error interno de configuración, no puedo buscar direcciones";
         public const string PARAMETROERROR = "Usuario no encontrado";
 
@@ -101,91 +98,54 @@ namespace Ucu.Poo.TelegramBot
             {
                 // En el estado Start le pide la dirección y pasa al estado AddressPrompt
                 this.stateForUser[message.From.Id] = State.NombreApellido;
-                response = NOMBREAPELLIDO;
+                response = PREGUNTAID;
             }
-            else if (state == State.NombreApellido)
+            else if (state == State.PreguntaId)
             {
-
-                // En el estado AddressPrompt el mensaje recibido es la respuesta con la dirección
-                if (message.Text.ToString()!=null & message.Text.ToString().Split(" ").Length==2)
+                this.Data[message.From.Id].UserId = message.Text.ToString();
+                var user= UserManager.Instance.Users.Find(i => i.ID == this.Data.UserId);
+                if(user!=null)
                 {
-                    this.Data[message.From.Id].NombreApellido = message.Text.ToString();
-                    this.stateForUser[message.From.Id] = State.RolPregunta;
-                    response = ROLPREGUNTA;
+                    this.Data[message.From.Id].User = user;
+                    this.stateForUser[message.From.Id] = State.PreguntaRating;
+                    response = PREGUNTARATING
                 }
                 else
                 {
-                    response = "Error. Ingrese nuevamente";
+                    response = "Usuario no encontrado. Intente nuevamente";
                 }
             }
-            else if (state == State.RolPregunta)
+            else if (state == State.PreguntaRating)
+            {
+                this.Data[message.From.Id].Rating = message.Text.ToString();
+                this.stateForUser[message.From.Id] = State.PreguntaComment;
+                response =PREGUNTACOMMENT ;
+            }
+            else if (state == State.PreguntaComment)
+            {
+                this.Data[message.From.Id].Comment = message.Text.ToString();
+                if(this.Data[message.From.Id].User is Employer)
                 {
-                    if(message.Text.ToString()!=null & (message.Text.ToString().ToLower== "employee" | message.Text.ToString().ToLower== "employer"  ))
-                    {
-                        this.Data[message.From.Id].Rol = message.Text.ToString();
-                        this.stateForUser[message.From.Id] = State.LocationPregunta;
-                        response = LOCATIONPREGUNTA;
-                    }
-                    else
-                    {
-                        response = "Rol no encontrado. Intente nuevamente";
-                    }
+                    var contract= ContractManager.Instance.contracts.Find(i => i.employee.ID == message.From.Id.ToString() & i.employer.ID = this.Data.UserId);
                 }
-            else if (state == State.LocationPregunta)
+                else
                 {
-                    if(message.Text.ToString()!=null & message.Text.ToString().Split(" ").Length==2)
-                    {
-                        AddressFinder address= new AddressFinder();
-                        if(address.GetLocation(message.Text.ToString())!= null);
-                        {
-                            this.Data[message.From.Id].Location = message.Text.ToString();
-                            this.stateForUser[message.From.Id] = State.NumberPregunta;
-                            response = NUMBERPREGUNTA;
-                        }
-                        else
-                        { 
-                            response = "Ubicacion no valida";
-                        }
-                    }
-                    else
-                    {
-                        response = "Parametros no validos, intente de nuevo.";
-                    }
+                    var contract= ContractManager.Instance.contracts.Find(i => i.employee.ID == this.Data.UserId & i.employer = message.From.Id.ToString());
                 }
-            else if (state == State.NumberPregunta)
+                if(contract!= null)
                 {
-
-                    if(message.Text.ToString()!=null )
-                    {
-                        this.Data[message.From.Id].PhoneNumber = message.Text.ToString();
-                        this.stateForUser[message.From.Id] = State.EmailPregunta;
-                        response = EMAILPREGUNTA;
-                    }
-                    else
-                    {
-                        response = "Numero no valido";
-                    }
+                    QualificationManager.Instance.Review(this.Data[message.From.Id].User, this.Data[message.From.Id].Rating,this.Data[message.From.Id].Comment, contract);    
+                    this.stateForUser.Remove(message.From.Id);
+                    this.Data.Remove(message.From.Id);
+                    response = "Usuario calificado correctamente" ;
                 }
-            else if (state == State.EmailPregunta)
+                else
                 {
-
-                    if(message.Text.ToString()!=null)
-                    {
-                        this.Data[message.From.Id].Email = message.Text.ToString();
-                        UserManager.Instance.CreateUser(this.Data[message.From.Id].NombreApellido.Split()[0],this.Data[message.From.Id].NombreApellido.Split()[1]
-                        ,message.From.Id.ToString() ,this.Data[message.From.Id].Rol,this.Data[message.From.Id].Location,this.Data[message.From.Id].PhoneNumber,this.Data[message.From.Id].Email);
-                        
-                        this.stateForUser.Remove(message.From.Id);
-                        this.Data.Remove(message.From.Id);
-                        response = "Se obtuvieron los datos correctamente";
-                    }
-                    else
-                    {
-                        response = PARAMETROERROR;
-                    }
-                 }
-            
-            
+                    response = "No hay ningun contrato finalizado con estos usuarios"
+                    this.stateForUser.Remove(message.From.Id);
+                    this.Data.Remove(message.From.Id);
+                }
+            }
             else
             {
                 response = string.Empty;
@@ -213,11 +173,9 @@ namespace Ucu.Poo.TelegramBot
         public enum State
         {
             Start,
-            NombreApellido,
-            RolPregunta,
-            LocationPregunta,
-            NumberPregunta,
-            EmailPregunta
+            PreguntaId,
+            PreguntaRating,
+            PreguntaComment
         }
 
         /// <summary>
@@ -226,15 +184,11 @@ namespace Ucu.Poo.TelegramBot
         private class UserData
         {
             
-            public string NombreApellido { get; set; }
-            public string Rol { get; set; }
-            public string Location { get; set; }
-            public string PhoneNumber { get; set; }
-            public string ID { get; set; }
-            public string Email { get; set; }
-
-
-
+            public string UserId { get; set; }
+            public IUser User { get; set; }
+            public string Rating { get; set; }
+            public string Comment { get; set; }
+            
             /// <summary>
             /// El resultado de la búsqueda de la dirección ingresada.
             /// </summary>

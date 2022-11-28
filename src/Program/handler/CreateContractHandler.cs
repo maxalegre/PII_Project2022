@@ -27,7 +27,9 @@ namespace Ucu.Poo.TelegramBot
                 return this.stateForUser;
             }
         }
+        private Dictionary<long, UserData> Data = new Dictionary<long, UserData>();
 
+        private Dictionary<long, DistanceData> Data = new Dictionary<long, DistanceData>();
         // Un buscador de direcciones. Permite que la forma de encontrar una dirección se determine en tiempo de
         // ejecución: en el código final se asigna un objeto que use una API para buscar direcciones; y en los casos de
         // prueba se asigne un objeto que retorne un resultado que puede ser configurado desde el caso de prueba.
@@ -83,6 +85,8 @@ namespace Ucu.Poo.TelegramBot
             if (!this.stateForUser.ContainsKey(message.From.Id))
             {
                 this.stateForUser.Add(message.From.Id, State.Start);
+                this.Data.Add(message.From.Id, new UserData());
+
             }
 
             State state = this.StateForUser[message.From.Id];
@@ -95,15 +99,13 @@ namespace Ucu.Poo.TelegramBot
             }
             else if (state == State.PrimeraPregunta)
             {
-                AddressData data = new AddressData();
-
                 // En el estado AddressPrompt el mensaje recibido es la respuesta con la dirección
-                data.UserID = message.Text.ToString(); 
+                this.Data.UserID = message.Text.ToString(); 
                 var user =UserManager.Instance.Users.Find(i => i.ID == data.UserID);
                 if (user!=null)
                 {
                     var me = UserManager.Instance.Users.Find(i => i.ID == message.From.Id.ToString());;
-                    //ContractManager.Instance.createContracts("Hola", "sdasd","Jardineria",user,me);
+                    ContractManager.Instance.createContracts("Hola", "sdasd","Jardineria",(Employee)user,(Employer)me);
                     // Si encuentra la dirección pasa nuevamente al estado Initial
                     response = $"Usuario {user.Name} contratado";
                     this.stateForUser.Remove(message.From.Id); // Equivalente a volver al estado inicial
@@ -154,7 +156,7 @@ namespace Ucu.Poo.TelegramBot
         /// <summary>
         /// Representa los datos que va obteniendo el comando AddressHandler en los diferentes estados.
         /// </summary>
-        private class AddressData
+        private class UserData
         {
             /// <summary>
             /// La dirección que se ingresó en el estado AddressState.AddressPrompt.
