@@ -104,6 +104,7 @@ namespace Ucu.Poo.TelegramBot
                 {
                     this.Data[message.From.Id].UserID = message.Text.ToString();
                     this.Data[message.From.Id].User = UserManager.Instance.Users.Find(i => i.ID == message.Text.ToString());
+                    this.stateForUser[message.From.Id] = State.DuracionPregunta;
                     
                     response= DURACIONPREGUNTA;
                 }
