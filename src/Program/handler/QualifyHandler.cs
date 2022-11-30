@@ -106,9 +106,32 @@ namespace Ucu.Poo.TelegramBot
                 var user= UserManager.Instance.Users.Find(i => i.ID == this.Data[message.From.Id].UserId);
                 if(user!=null)
                 {
-                    this.Data[message.From.Id].User = user;
-                    this.stateForUser[message.From.Id] = State.PreguntaRating;
-                    response = PREGUNTARATING;
+                    List<Contract> list = ContractManager.Instance.getFinishedContracts(UserManager.Instance.Users.Find(i => i.ID == message.From.Id.ToString()));
+                    if (list.Count > 0)
+                    {
+                        response = "";
+                        foreach (Contract item in list)
+                        {
+                            if (item.employer.ID == this.Data[message.From.Id].UserId || item.employee.ID == this.Data[message.From.Id].UserId )
+                            {
+                                this.Data[message.From.Id].User = user;
+                                this.stateForUser[message.From.Id] = State.PreguntaRating;
+                                response = PREGUNTARATING;
+                            }
+                            else
+                            {
+                                response = "El usuario a calificar no se encuentra dentro de los contratos finalizados. \nNo se puede calificar.";
+                                this.stateForUser.Remove(message.From.Id);
+                                this.Data.Remove(message.From.Id);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        response = "No hay contratos finalizados, no se puede calificar";
+                        this.stateForUser.Remove(message.From.Id);
+                        this.Data.Remove(message.From.Id);
+                    }
                 }
                 else
                 {
