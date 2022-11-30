@@ -100,20 +100,10 @@ namespace Ucu.Poo.TelegramBot
             //Cliente para trabajar con la busqueda de ofertas mediante la ubicacion.
             //LocationApiClient client = new LocationApiClient();
 
-            Employee empleado= new Employee("Lucas","Alegre","232323","sasdasd","23423423","ksdfds@dsfds");
-            Employee empleado2= new Employee("Lucsdas","Alesdgre","232323","sdsasdasd","23423423","ksdfds@dsfds");
-            UserManager.Instance.CreateUser("Lucas", "Alehrr","2312323123","employee","Montevideo","123123","asdasd@asdas");
-            UserManager.Instance.CreateUser("Gerardo", "Vegas","83838212","employer","Montevideo","09214212","asdasd@asdas");
-
-            OffersManager.Instance.addOffer(empleado,"Casads",22.22,"Jardineria");
-            OffersManager.Instance.addOffer(empleado2,"sadasd",22.2323,"Jardineria");
-
-
             Bot = new TelegramBotClient(token);
             client = new LocationApiClient();
 
             firstHandler =
-                new HelloHandler(
                 new OffersHandler(
                 new CreateContractHandler(
                 new RegisterUserHandler(
@@ -121,7 +111,7 @@ namespace Ucu.Poo.TelegramBot
                 new QualifyHandler(
                 new AddressHandler(new AddressFinder(client),
                 new DistanceHandler(new DistanceCalculator(client), null)
-            )))))));
+            ))))));
 
 
 
