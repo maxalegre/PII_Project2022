@@ -24,8 +24,5 @@ public class Admin
         CategoriesManager.Instance.addCategory(category);
    }
 
-   public void removeOffer()
-   {
-        OffersManager.Instance.removeOffer();
-   }
+  
 }

@@ -34,12 +34,6 @@ namespace Library
         }
 
         // Metodo utilizado por admin para remover ofertas
-        public void removeOffer() {
-            PrintOffers();
-            System.Console.WriteLine("\nIndique el numero de la oferta a eliminar: ");
-            this.Offers.RemoveAt(int.Parse(System.Console.ReadLine())-1);
-        }
-
         // Metodo utilizado al contratar un servicio.
         public void removeOffer(Offer offer) {
             Offers.Remove(offer);

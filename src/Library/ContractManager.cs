@@ -49,7 +49,8 @@ public sealed class ContractManager
 
         Contract contract = new Contract (System.DateTime.Now, System.DateTime.Now.AddMonths(duration), jobs, employer, employee);
         this.contracts.Add(contract);
-
+        Offer offer= OffersManager.Instance.Offers.Find(i => i.employee == employee);
+        OffersManager.Instance.removeOffer(offer);
     }
     public List<Contract> getContracts(IUser user)
     {
