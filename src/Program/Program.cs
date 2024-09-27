@@ -12,6 +12,7 @@ using Telegram.Bot.Extensions.Polling;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.InputFiles;
+using Ucu.Poo.Locations.Client;
 
 namespace Ucu.Poo.TelegramBot
 {
@@ -87,27 +88,32 @@ namespace Ucu.Poo.TelegramBot
 
         private static IHandler firstHandler;
 
+        private static LocationApiClient client;
+
         /// <summary>
         /// Punto de entrada al programa.
         /// </summary>
         public static void Main()
         {
-
-            Employee empleado= new Employee("Lucas","Alegre","232323","Jardinero","sasdasd","23423423","ksdfds@dsfds");
-            Employee empleado2= new Employee("Lucsdas","Alesdgre","232323","Jardinero","sdsasdasd","23423423","ksdfds@dsfds");
-
-            OffersManager.Instance.addOffer(empleado,"Casads",22.22,"Jardineria");
-            OffersManager.Instance.addOffer(empleado2,"sadasd",22.2323,"Jardineria");
-
             Start();
+            
+            //Cliente para trabajar con la busqueda de ofertas mediante la ubicacion.
+            //LocationApiClient client = new LocationApiClient();
 
             Bot = new TelegramBotClient(token);
+            client = new LocationApiClient();
 
             firstHandler =
-                new HelloHandler(
                 new OffersHandler(
-                new PhotoHandler(Bot, null)
-            ));
+                new CreateContractHandler(
+                new RegisterUserHandler(
+                new HelpHandler(
+                new QualifyHandler(
+                new AddressHandler(new AddressFinder(client),
+                new DistanceHandler(new DistanceCalculator(client), null)
+            ))))));
+
+
 
             var cts = new CancellationTokenSource();
 

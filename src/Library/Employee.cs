@@ -8,8 +8,8 @@ public class Employee : User, IUser
 {
     public bool hired = false; // Esto lo hice para certificar una contratacion
 
-    public Employee (string name, string lastname, string id, string rol, string location, string contactnumber, string contactemail) 
-    : base(name, lastname, id, rol, location, contactemail, contactnumber)
+    public Employee (string name, string lastname, string id, string location, string contactnumber, string contactemail) 
+    : base(name, lastname, id, location, contactemail, contactnumber)
     {
         if (string.IsNullOrEmpty(name))
         {

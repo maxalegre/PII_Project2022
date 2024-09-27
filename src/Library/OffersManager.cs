@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Collections.ObjectModel;
 namespace Library
 {
     public sealed class OffersManager
@@ -33,12 +34,6 @@ namespace Library
         }
 
         // Metodo utilizado por admin para remover ofertas
-        public void removeOffer() {
-            PrintOffers();
-            System.Console.WriteLine("\nIndique el numero de la oferta a eliminar: ");
-            this.Offers.RemoveAt(int.Parse(System.Console.ReadLine())-1);
-        }
-
         // Metodo utilizado al contratar un servicio.
         public void removeOffer(Offer offer) {
             Offers.Remove(offer);
@@ -53,22 +48,6 @@ namespace Library
                 count++;
             }
         }
-        
-        /*
-        public void getOffersByCategory(string category) {            
-            List<Offer> offersByCategory= new List<Offer>();
-            
-            foreach(Offer offer in this.Offers)
-            {   
-                if(offer.Category == category)
-                {
-                     //offersByCategory.Add(offer);
-                     Console.WriteLine($"Oferta: {offer.Description}\nNombre: {offer.employee.Name}\nApellido: {offer.employee.LastName}\nCategoria: {offer.Category} ");
-                }
-
-            }
-        }
-        */
         
         public  List<Offer> sortOffersByReputation()
         {
@@ -93,6 +72,7 @@ namespace Library
             }
             return categoriesOffer;
         }
+        
         
     }}
         
